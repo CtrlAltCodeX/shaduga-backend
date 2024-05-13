@@ -9,13 +9,410 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/register": {
+        "/chats": {
+            "get": {
+                "tags": [
+                    "Chats"
+                ],
+                "summary": "Get all Chats",
+                "description": "Display a listing of the Chats",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Chat"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Chats"
+                ],
+                "summary": "Create a new Chat",
+                "description": "Store a newly created Chat in storage",
+                "operationId": "store",
+                "requestBody": {
+                    "description": "Chat data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateChatRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Chat"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/chats/{id}": {
+            "delete": {
+                "tags": [
+                    "Chats"
+                ],
+                "summary": "Remove the specified Chat",
+                "description": "Remove the specified Chat from storage.",
+                "operationId": "fcd62a7dc6d12b23fc8ee00509e4ce47",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Chat",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Chat deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Chat not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Chat not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/communities": {
+            "get": {
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "Get list of communities",
+                "description": "Returns a list of communities",
+                "operationId": "getCommunitiesList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Community"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "Store a new community",
+                "description": "Creates a new community",
+                "operationId": "storeCommunity",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Community"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Community created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Community"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/communities/{id}": {
+            "get": {
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "Get a specific community",
+                "description": "Returns the specified community",
+                "operationId": "getCommunityById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the community",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Community"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/members": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get all members",
+                "description": "Display a listing of the Members.\nGET|HEAD /api/members",
+                "operationId": "c867fc12560e778a9a0525873e627814",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/members/{id}": {
+            "delete": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Delete a member",
+                "description": "Remove the specified Member from storage.",
+                "operationId": "6149d66e3554ff3511566c694c1eea60",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the member to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Member deleted successfully"
+                    },
+                    "404": {
+                        "description": "Member not found"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a specific user",
+                "description": "Returns the specified user",
+                "operationId": "getUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a specific user",
+                "description": "Deletes the specified user",
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a specific user",
+                "description": "Updates the specified user",
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "User data to update",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/register": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Register a new user",
-                "operationId": "fc3d5fc714467aa4fbb13c958ab78a59",
+                "operationId": "da913b2d804652f35c0a2c2f83015983",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -108,13 +505,13 @@
                 }
             }
         },
-        "/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "User login",
-                "operationId": "dbcc9502738a479315fbf1024490ba19",
+                "operationId": "6d196eb99f855a1b46f47f5ed8ba40ce",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -209,6 +606,338 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/send-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Send OTP",
+                "description": "Send OTP to the user's email address.",
+                "operationId": "a20b9a3181f58435143af553a42ff1c0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "OTP sent successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/verify-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify OTP",
+                "description": "Verify the OTP provided by the user.",
+                "operationId": "2eb5ee9536d9fefc7aa56a085b9ba219",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP successfully verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "OTP successfully matched"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid OTP",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid OTP"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Chat": {
+                "title": "Chat",
+                "description": "Chat message schema",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the chat message",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "description": "Content of the chat message",
+                        "type": "string"
+                    },
+                    "sender_id": {
+                        "description": "Identifier of the user who sent the message",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "receiver_id": {
+                        "description": "Identifier of the user or group who received the message",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "timestamp": {
+                        "description": "Timestamp indicating when the message was sent",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "description": "Status of the message (e.g., sent, delivered, read)",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Type of message (e.g., text, image, video)",
+                        "type": "string"
+                    },
+                    "conversation_id": {
+                        "description": "Identifier of the conversation thread or chat session",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateChatRequest": {
+                "title": "Create Chat Request",
+                "description": "Request body schema for creating a new Chat",
+                "required": [
+                    "message",
+                    "sender_id",
+                    "receiver_id"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "Content of the chat message",
+                        "type": "string"
+                    },
+                    "sender_id": {
+                        "description": "Identifier of the user who sent the message",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "receiver_id": {
+                        "description": "Identifier of the user or group who received the message",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "attachment": {
+                        "description": "Attachment data or reference (optional)",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Type of message (e.g., text, image, video) (optional)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Community": {
+                "title": "Community",
+                "description": "Community model",
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "Name of the community",
+                        "type": "string"
+                    },
+                    "owner_id": {
+                        "description": "owner_id of the community",
+                        "type": "string"
+                    },
+                    "privacy": {
+                        "description": "privacy of the community",
+                        "type": "string"
+                    },
+                    "category_id": {
+                        "description": "category_id of the community",
+                        "type": "string"
+                    },
+                    "member_count": {
+                        "description": "member_count of the community",
+                        "type": "string"
+                    },
+                    "post_count": {
+                        "description": "post_count of the community",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "status of the community",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Member": {
+                "title": "Member",
+                "description": "Member model",
+                "properties": {
+                    "id": {
+                        "description": "ID of the member",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "community_id": {
+                        "description": "community_id of the member",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "user_id of the member",
+                        "type": "integer"
+                    },
+                    "join_date": {
+                        "description": "join_date of the member",
+                        "type": "Date"
+                    },
+                    "status": {
+                        "description": "status of the member",
+                        "type": "Integer"
+                    },
+                    "role": {
+                        "description": "role of the member",
+                        "type": "string"
+                    },
+                    "last_active": {
+                        "description": "last_active of the member",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "Name of the user",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRequest": {
+                "title": "User Request",
+                "description": "User request data",
+                "properties": {
+                    "name": {
+                        "description": "Name of the user",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email of the user",
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "type": "object"
             }
         }
     }
