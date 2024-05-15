@@ -37,3 +37,7 @@ Route::post('register', [UserAPIController::class, 'register'])->name('register'
 
 Route::resource('chats', App\Http\Controllers\API\ChatAPIController::class)
     ->except(['create', 'edit']);
+
+
+Route::resource('reviews', App\Http\Controllers\API\ReviewAPIController::class)
+    ->except(['create', 'edit']);

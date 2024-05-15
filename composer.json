@@ -12,6 +12,7 @@
         "infyomlabs/laravel-generator": "^6.0",
         "infyomlabs/swagger-generator": "^3.2",
         "laravel/framework": "^10.10",
+        "laravel/passport": "^12.2",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "prettus/l5-repository": "^2.9"
