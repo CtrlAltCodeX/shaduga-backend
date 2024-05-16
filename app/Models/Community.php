@@ -28,8 +28,8 @@ class Community extends Model
         'owner_id' => 'required',
         'privacy' => 'required',
         'category_id' => 'required',
-        'member_count' => 'requried',
-        'post_count' => 'requried',
+        'member_count' => 'required',
+        'post_count' => 'required',
         'status' => 'required'
     ];
 

@@ -27,13 +27,11 @@ class Chat extends Model
     ];
 
     public static array $rules = [
-        'sender_id' => 'requried',
+        'sender_id' => 'required',
         'receiver_id' => 'required',
         'message' => 'required',
-        'status' => 'requreid',
-        'conversation_id' => 'requred',
+        'status' => 'required',
+        'conversation_id' => 'required',
         'type' => 'required'
     ];
-
-    
 }

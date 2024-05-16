@@ -24,7 +24,7 @@ class ChatAPIController extends AppBaseController
 
     /**
      * @OA\Get(
-     *      path="/chats",
+     *      path="/api/chats",
      *      summary="Get all Chats",
      *      tags={"Chats"},
      *      description="Display a listing of the Chats",
@@ -101,7 +101,7 @@ class ChatAPIController extends AppBaseController
 
     /**
      * @OA\Post(
-     *      path="/chats",
+     *      path="/api/chats",
      *      summary="Create a new Chat",
      *      tags={"Chats"},
      *      description="Store a newly created Chat in storage",
@@ -158,6 +158,11 @@ class ChatAPIController extends AppBaseController
      *          type="string",
      *          description="Type of message (e.g., text, image, video) (optional)",
      *      ),
+     *       @OA\Property(
+     *          property="status",
+     *          type="string",
+     *          description="Status",
+     *      ),
      * )
      */
     public function store(CreateChatAPIRequest $request): JsonResponse
@@ -212,7 +217,7 @@ class ChatAPIController extends AppBaseController
      * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Delete(
-     *     path="/chats/{id}",
+     *     path="/api/chats/{id}",
      *     summary="Remove the specified Chat",
      *     tags={"Chats"},
      *     @OA\Parameter(

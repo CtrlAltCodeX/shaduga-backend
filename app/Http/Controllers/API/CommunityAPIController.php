@@ -59,7 +59,7 @@ class CommunityAPIController extends AppBaseController
      *      ),
      *      @OA\Property(
      *          property="owner_id",
-     *          type="string",
+     *          type="integer",
      *          description="owner_id of the community"
      *      ),
      *      @OA\Property(
@@ -69,22 +69,22 @@ class CommunityAPIController extends AppBaseController
      *      ),
      *      @OA\Property(
      *          property="category_id",
-     *          type="string",
+     *          type="integer",
      *          description="category_id of the community"
      *      ),
      *      @OA\Property(
      *          property="member_count",
-     *          type="string",
+     *          type="integer",
      *          description="member_count of the community"
      *      ),
      *      @OA\Property(
      *          property="post_count",
-     *          type="string",
+     *          type="integer",
      *          description="post_count of the community"
      *      ),
      *      @OA\Property(
      *          property="status",
-     *          type="string",
+     *          type="integer",
      *          description="status of the community"
      *      ),
      * )

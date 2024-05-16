@@ -15,29 +15,27 @@ use App\Http\Controllers\API\UserAPIController;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('communities', App\Http\Controllers\API\CommunityAPIController::class)
-        ->except(['create', 'edit']);
+// Route::middleware('auth:sanctum')->group(function () {
+Route::resource('communities', App\Http\Controllers\API\CommunityAPIController::class)
+    ->except(['create', 'edit']);
 
-    Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
-        ->except(['create', 'edit']);
+Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
+    ->except(['create', 'edit']);
 
-    Route::resource('members', App\Http\Controllers\API\MemberAPIController::class)
-        ->except(['create', 'edit']);
+Route::resource('members', App\Http\Controllers\API\MemberAPIController::class)
+    ->except(['create', 'edit']);
 
-    Route::post('send/otp', [UserAPIController::class, 'sendOTP'])->name('user.otp');
+Route::post('send/otp', [UserAPIController::class, 'sendOTP']);
 
-    Route::post('verify/otp', [UserAPIController::class, 'verifyOTP'])->name('user.otp.verify');
-});
-
-Route::post('login', [UserAPIController::class, 'login'])->name('login');
-
-Route::post('register', [UserAPIController::class, 'register'])->name('register');
-
+Route::post('verify/otp', [UserAPIController::class, 'verifyOTP']);
 
 Route::resource('chats', App\Http\Controllers\API\ChatAPIController::class)
     ->except(['create', 'edit']);
 
-
 Route::resource('reviews', App\Http\Controllers\API\ReviewAPIController::class)
     ->except(['create', 'edit']);
+// });
+
+Route::post('login', [UserAPIController::class, 'login'])->name('login');
+
+Route::post('register', [UserAPIController::class, 'register'])->name('register');

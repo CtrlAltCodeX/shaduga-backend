@@ -44,9 +44,32 @@ class ReviewAPIController extends AppBaseController
      *         description="Unique identifier for the review"
      *     ),
      *     @OA\Property(
+     *         property="user_id",
+     *         type="integer",
+     *         format="int64",
+     *         description="Unique identifier for the User"
+     *     ),
+     *     @OA\Property(
+     *         property="rating",
+     *         type="integer",
+     *         format="int64",
+     *         description="Rating"
+     *     ),
+     *     @OA\Property(
+     *         property="title",
+     *         type="integer",
+     *         format="int64",
+     *         description="Title"
+     *     ),
+     *     @OA\Property(
      *         property="content",
      *         type="string",
      *         description="Content of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="status",
+     *         type="string",
+     *         description="Status of the review"
      *     ),
      *     @OA\Property(
      *         property="created_at",
@@ -65,16 +88,16 @@ class ReviewAPIController extends AppBaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
-    {
-        $reviews = $this->reviewRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $reviews = $this->reviewRepository->all(
+    //         $request->except(['skip', 'limit']),
+    //         $request->get('skip'),
+    //         $request->get('limit')
+    //     );
 
-        return $this->sendResponse($reviews->toArray(), 'Reviews retrieved successfully');
-    }
+    //     return $this->sendResponse($reviews->toArray(), 'Reviews retrieved successfully');
+    // }
 
     /**
      * Store a newly created Review in storage.
@@ -102,12 +125,56 @@ class ReviewAPIController extends AppBaseController
      *     )
      * )
      * 
-     * @OA\RequestBody(
-     *     request="CreateReviewAPIRequest",
-     *     required=true,
-     *     description="Review data",
-     *     @OA\JsonContent(
-     *         @OA\Property(property="content", type="string", example="This is a review content")
+     * @OA\Schema(
+     *     schema="CreateReviewAPIRequest",
+     *     title="Create Review API Request",
+     *     description="Request body parameters for creating a review.",
+     *     required={"product_id", "rating", "comment"},
+     *     @OA\Property(
+     *         property="id",
+     *         type="integer",
+     *         format="int64",
+     *         description="Unique identifier for the review"
+     *     ),
+     *     @OA\Property(
+     *         property="user_id",
+     *         type="integer",
+     *         format="int64",
+     *         description="Unique identifier for the User"
+     *     ),
+     *     @OA\Property(
+     *         property="rating",
+     *         type="integer",
+     *         format="int64",
+     *         description="Rating"
+     *     ),
+     *     @OA\Property(
+     *         property="title",
+     *         type="integer",
+     *         format="int64",
+     *         description="Title"
+     *     ),
+     *     @OA\Property(
+     *         property="content",
+     *         type="string",
+     *         description="Content of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="status",
+     *         type="string",
+     *         description="Status of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="created_at",
+     *         type="string",
+     *         format="date-time",
+     *         description="Creation date of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="updated_at",
+     *         type="string",
+     *         format="date-time",
+     *         description="Last update date of the review"
      *     )
      * )
      * 
@@ -115,14 +182,14 @@ class ReviewAPIController extends AppBaseController
      * @param CreateReviewAPIRequest $request
      * @return JsonResponse
      */
-    public function store(CreateReviewAPIRequest $request): JsonResponse
-    {
-        $input = $request->all();
+    // public function store(CreateReviewAPIRequest $request): JsonResponse
+    // {
+    //     $input = $request->all();
 
-        $review = $this->reviewRepository->create($input);
+    //     $review = $this->reviewRepository->create($input);
 
-        return $this->sendResponse($review->toArray(), 'Review saved successfully');
-    }
+    //     return $this->sendResponse($review->toArray(), 'Review saved successfully');
+    // }
 
     /**
      * Display the specified Review.

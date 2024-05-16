@@ -380,7 +380,7 @@ class UserAPIController extends AppBaseController
 
     /**
      * @OA\Post(
-     *     path="/api/send-otp",
+     *     path="/api/send/otp",
      *     summary="Send OTP",
      *     description="Send OTP to the user's email address.",
      *     tags={"Authentication"},
@@ -432,7 +432,7 @@ class UserAPIController extends AppBaseController
 
     /**
      * @OA\Post(
-     *     path="/api/verify-otp",
+     *     path="/api/verify/otp",
      *     summary="Verify OTP",
      *     description="Verify the OTP provided by the user.",
      *     tags={"Authentication"},
@@ -440,7 +440,8 @@ class UserAPIController extends AppBaseController
      *         required=true,
      *         @OA\JsonContent(
      *             required={"otp"},
-     *             @OA\Property(property="otp", type="string", example="123456")
+     *             @OA\Property(property="otp", type="string", example="123456"),
+     *             @OA\Property(property="email", type="string", example="admin@example.com")
      *         )
      *     ),
      *     @OA\Response(
@@ -469,10 +470,15 @@ class UserAPIController extends AppBaseController
         ]);
 
         $user = User::where('email', request()->email)
+            ->first();
+
+        if (!$user) return $this->sendError('Email Id Invalid');
+
+        $userWithOTP = User::where('email', request()->email)
             ->where('otp', request()->otp)
             ->first();
 
-        if (!$user) return $this->sendError('Invalid OTP');
+        if (!$userWithOTP) return $this->sendError('Invalid OTP');
 
         return $this->sendResponse('OTP successfully matched');
     }
