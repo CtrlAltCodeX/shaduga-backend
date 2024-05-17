@@ -58,14 +58,14 @@ class CommunityAPIController extends AppBaseController
      *          description="Name of the community"
      *      ),
      *      @OA\Property(
-     *          property="owner_id",
-     *          type="integer",
-     *          description="owner_id of the community"
+     *          property="logo",
+     *          type="string",
+     *          description="Logo of the community"
      *      ),
      *      @OA\Property(
-     *          property="privacy",
+     *          property="description",
      *          type="string",
-     *          description="privacy of the community"
+     *          description="description of the community"
      *      ),
      *      @OA\Property(
      *          property="category_id",
@@ -73,19 +73,14 @@ class CommunityAPIController extends AppBaseController
      *          description="category_id of the community"
      *      ),
      *      @OA\Property(
-     *          property="member_count",
+     *          property="is_blockchain",
      *          type="integer",
-     *          description="member_count of the community"
+     *          description="is_blockchain of the community"
      *      ),
      *      @OA\Property(
-     *          property="post_count",
-     *          type="integer",
-     *          description="post_count of the community"
-     *      ),
-     *      @OA\Property(
-     *          property="status",
-     *          type="integer",
-     *          description="status of the community"
+     *          property="website",
+     *          type="string",
+     *          description="website of the community"
      *      ),
      * )
      */

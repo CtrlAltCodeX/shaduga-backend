@@ -9,29 +9,35 @@ class Community extends Model
     public $table = 'communities';
 
     public $fillable = [
+        'logo',
         'name',
-        'owner_id',
-        'privacy',
+        'description',
+        'is_blockchain',
+        'website',
         'category_id',
-        'member_count',
-        'post_count',
-        'status'
+        // 'owner_id',
+        // 'privacy',
+        // 'member_count',
+        // 'post_count',
+        // 'status'
     ];
 
     protected $casts = [
         'name' => 'string',
-        'privacy' => 'string'
+        // 'privacy' => 'string'
     ];
 
     public static array $rules = [
+        'logo' => 'required',
         'name' => 'required',
-        'owner_id' => 'required',
-        'privacy' => 'required',
+        'description' => 'required',
+        'is_blockchain' => 'required',
+        'website' => 'required',
         'category_id' => 'required',
-        'member_count' => 'required',
-        'post_count' => 'required',
-        'status' => 'required'
-    ];
-
-    
+        // 'owner_id' => 'required',
+        // 'privacy' => 'required',
+        // 'member_count' => 'requried',
+        // 'post_count' => 'requried',
+        // 'status' => 'required'
+    ];    
 }
