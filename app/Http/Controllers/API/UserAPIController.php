@@ -245,7 +245,7 @@ class UserAPIController extends AppBaseController
      *         description="User registered successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="boolean", example=true),
-     *             @OA\Property(property="data", type="object",
+     *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="John Doe"),
      *                 @OA\Property(property="email", type="string", example="user@example.com")
@@ -278,11 +278,15 @@ class UserAPIController extends AppBaseController
             ], 400);
         }
 
-        $user = $this->userRepository->create([
+        $data = [
             'name'       => request()->name,
             'email'      => request()->email,
             'password'   => Hash::make(request()->password),
-        ]);
+        ];
+
+        $this->userRepository->create($data);
+
+        $user['user'] = $data;
 
         return $this->sendResponse('Register successfully', $user);
     }
@@ -481,5 +485,73 @@ class UserAPIController extends AppBaseController
         if (!$userWithOTP) return $this->sendError('Invalid OTP');
 
         return $this->sendResponse('OTP successfully matched');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/current/user",
+     *     summary="Get Current User",
+     *     description="Returns the current authenticated user",
+     *     tags={"Users"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Current User",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=true
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="id",
+     *                     type="integer",
+     *                     example=1
+     *                 ),
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string",
+     *                     example="John Doe"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string",
+     *                     example="johndoe@example.com"
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Current User"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Please Login!!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Please Login!!"
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function currentUser()
+    {
+        if (!auth()->check()) return $this->sendError('Please Login!!');
+
+        return $this->sendResponse('Current User', auth()->user());
     }
 }

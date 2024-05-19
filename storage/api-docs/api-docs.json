@@ -238,6 +238,36 @@
                 }
             }
         },
+        "/api/leader-boards": {
+            "get": {
+                "tags": [
+                    "LeaderBoards"
+                ],
+                "summary": "Display a listing of the LeaderBoards",
+                "operationId": "a66578ccca60b55ea6e5057438acfa5f",
+                "responses": {
+                    "200": {
+                        "description": "Leader Boards retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/LeaderBoard"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/members": {
             "get": {
                 "tags": [
@@ -289,6 +319,456 @@
                     },
                     "404": {
                         "description": "Member not found"
+                    }
+                }
+            }
+        },
+        "/api/quests": {
+            "get": {
+                "tags": [
+                    "Quests"
+                ],
+                "summary": "Display a listing of the Quests",
+                "operationId": "getQuestsList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token for authentication",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {token}"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quests retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Quests"
+                ],
+                "summary": "Store a newly created Quest in storage",
+                "operationId": "storeQuest",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "difficulty",
+                                    "recurrence",
+                                    "cooldown",
+                                    "claim_time",
+                                    "condition",
+                                    "reward",
+                                    "module",
+                                    "sprint",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Quest name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Quest description"
+                                    },
+                                    "difficulty": {
+                                        "type": "string",
+                                        "example": "easy"
+                                    },
+                                    "recurrence": {
+                                        "type": "string",
+                                        "example": "daily"
+                                    },
+                                    "cooldown": {
+                                        "type": "integer",
+                                        "example": 24
+                                    },
+                                    "claim_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-05-18T00:00:00Z"
+                                    },
+                                    "condition": {
+                                        "type": "string",
+                                        "example": "Complete 3 tasks"
+                                    },
+                                    "reward": {
+                                        "type": "string",
+                                        "example": "100 points"
+                                    },
+                                    "module": {
+                                        "type": "string",
+                                        "example": "Module A"
+                                    },
+                                    "sprint": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Quest saved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Quest name"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Quest description"
+                                                },
+                                                "difficulty": {
+                                                    "type": "string",
+                                                    "example": "easy"
+                                                },
+                                                "recurrence": {
+                                                    "type": "string",
+                                                    "example": "daily"
+                                                },
+                                                "cooldown": {
+                                                    "type": "integer",
+                                                    "example": 24
+                                                },
+                                                "claim_time": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-05-18T00:00:00Z"
+                                                },
+                                                "condition": {
+                                                    "type": "string",
+                                                    "example": "Complete 3 tasks"
+                                                },
+                                                "reward": {
+                                                    "type": "string",
+                                                    "example": "100 points"
+                                                },
+                                                "module": {
+                                                    "type": "string",
+                                                    "example": "Module A"
+                                                },
+                                                "sprint": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "status": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quest saved successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bad request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/quests/{id}": {
+            "delete": {
+                "tags": [
+                    "Quests"
+                ],
+                "summary": "Remove the specified Quests from storage",
+                "description": "Deletes a quests by its ID",
+                "operationId": "destroyQuests",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quests to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quests deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quests deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Quests not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quests not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reviews": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Display a listing of the Reviews",
+                "description": "Display a listing of the Reviews.",
+                "operationId": "246c486f4b3c9dfa919882558536f643",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Review"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Store a newly created Review in storage",
+                "description": "Store a newly created Review in storage.",
+                "operationId": "f19d00248318e567e6aae16f018058df",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateReviewAPIRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Review"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "field": [
+                                                    "The field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/subscriptions": {
+            "get": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Display a listing of the Subscriptions",
+                "operationId": "d0f1b367da9e9395814bc66331ce88a1",
+                "responses": {
+                    "200": {
+                        "description": "Successful retrieval of subscriptions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Subscription"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Store a newly created Subscription in storage",
+                "operationId": "286ca8bfa118011978c613004009c3f9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateSubscriptionAPIRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Subscription saved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
                     }
                 }
             }
@@ -455,7 +935,7 @@
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "data": {
+                                        "user": {
                                             "properties": {
                                                 "id": {
                                                     "type": "integer",
@@ -753,10 +1233,144 @@
                     }
                 }
             }
+        },
+        "/api/current/user": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get Current User",
+                "description": "Returns the current authenticated user",
+                "operationId": "f07fa19bf75337cdf6a270d6eeeb05c9",
+                "responses": {
+                    "200": {
+                        "description": "Current User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "johndoe@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Current User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Please Login!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Please Login!!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "Subscription": {
+                "description": "Subscription model",
+                "required": [
+                    "id",
+                    "name",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID of the subscription",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Name of the subscription",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "Status of the subscription",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Creation timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Last update timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateSubscriptionAPIRequest": {
+                "description": "Create subscription request",
+                "required": [
+                    "name",
+                    "status"
+                ],
+                "properties": {
+                    "user_id": {
+                        "description": "user_id of the subscription",
+                        "type": "string"
+                    },
+                    "plan_id": {
+                        "description": "plan_id of the subscription",
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "description": "start_date of the subscription",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "end_date": {
+                        "description": "end_date of the subscription",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "status": {
+                        "description": "Status of the subscription",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "Chat": {
                 "title": "Chat",
                 "description": "Chat message schema",
@@ -875,6 +1489,38 @@
                 },
                 "type": "object"
             },
+            "LeaderBoard": {
+                "title": "LeaderBoard",
+                "description": "LeaderBoard model",
+                "required": [
+                    "id",
+                    "name",
+                    "score"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "LeaderBoard ID",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "user_id of the LeaderBoard",
+                        "type": "integer"
+                    },
+                    "score": {
+                        "description": "Score of the LeaderBoard",
+                        "type": "integer"
+                    },
+                    "rank": {
+                        "description": "rank of the LeaderBoard",
+                        "type": "string"
+                    },
+                    "level": {
+                        "description": "level of the LeaderBoard",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "Member": {
                 "title": "Member",
                 "description": "Member model",
@@ -907,6 +1553,99 @@
                     "last_active": {
                         "description": "last_active of the member",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Review": {
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the review",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "description": "Unique identifier for the User",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "rating": {
+                        "description": "Rating",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "description": "Title",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "content": {
+                        "description": "Content of the review",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "Status of the review",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Creation date of the review",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Last update date of the review",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateReviewAPIRequest": {
+                "title": "Create Review API Request",
+                "description": "Request body parameters for creating a review.",
+                "required": [
+                    "product_id",
+                    "rating",
+                    "comment"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the review",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "description": "Unique identifier for the User",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "rating": {
+                        "description": "Rating",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "description": "Title",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "content": {
+                        "description": "Content of the review",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "Status of the review",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Creation date of the review",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Last update date of the review",
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"

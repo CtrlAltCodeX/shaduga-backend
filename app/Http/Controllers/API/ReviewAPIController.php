@@ -68,7 +68,7 @@ class ReviewAPIController extends AppBaseController
      *     ),
      *     @OA\Property(
      *         property="status",
-     *         type="string",
+     *         type="integer",
      *         description="Status of the review"
      *     ),
      *     @OA\Property(
@@ -88,16 +88,16 @@ class ReviewAPIController extends AppBaseController
      * @param Request $request
      * @return JsonResponse
      */
-    // public function index(Request $request): JsonResponse
-    // {
-    //     $reviews = $this->reviewRepository->all(
-    //         $request->except(['skip', 'limit']),
-    //         $request->get('skip'),
-    //         $request->get('limit')
-    //     );
+    public function index(Request $request): JsonResponse
+    {
+        $reviews = $this->reviewRepository->all(
+            $request->except(['skip', 'limit']),
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
-    //     return $this->sendResponse($reviews->toArray(), 'Reviews retrieved successfully');
-    // }
+        return $this->sendResponse($reviews->toArray(), 'Reviews retrieved successfully');
+    }
 
     /**
      * Store a newly created Review in storage.
@@ -161,7 +161,7 @@ class ReviewAPIController extends AppBaseController
      *     ),
      *     @OA\Property(
      *         property="status",
-     *         type="string",
+     *         type="integer",
      *         description="Status of the review"
      *     ),
      *     @OA\Property(
@@ -182,14 +182,14 @@ class ReviewAPIController extends AppBaseController
      * @param CreateReviewAPIRequest $request
      * @return JsonResponse
      */
-    // public function store(CreateReviewAPIRequest $request): JsonResponse
-    // {
-    //     $input = $request->all();
+    public function store(CreateReviewAPIRequest $request): JsonResponse
+    {
+        $input = $request->all();
 
-    //     $review = $this->reviewRepository->create($input);
+        $review = $this->reviewRepository->create($input);
 
-    //     return $this->sendResponse($review->toArray(), 'Review saved successfully');
-    // }
+        return $this->sendResponse($review->toArray(), 'Review saved successfully');
+    }
 
     /**
      * Display the specified Review.
