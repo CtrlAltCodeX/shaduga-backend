@@ -16,7 +16,8 @@ class Quest extends Model
         'reward',
         'module',
         'sprint',
-        'status'
+        'status',
+        'user_id',
     ];
 
     protected $casts = [
@@ -27,7 +28,8 @@ class Quest extends Model
         'reward' => 'string',
         'module' => 'string',
         'sprint' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'user_id' => 'integer'
     ];
 
     public static array $rules = [
@@ -38,8 +40,7 @@ class Quest extends Model
         'reward' => 'required',
         'module' => 'required',
         'sprint' => 'required',
-        'status' => 'required'
+        'status' => 'required',
+        'user_id' => 'required'
     ];
-
-    
 }

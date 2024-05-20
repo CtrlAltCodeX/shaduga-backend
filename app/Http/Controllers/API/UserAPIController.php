@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Mail\OtpMail;
+use App\Repositories\MemberRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -22,8 +23,10 @@ class UserAPIController extends AppBaseController
 {
     private UserRepository $userRepository;
 
-    public function __construct(UserRepository $userRepo)
-    {
+    public function __construct(
+        UserRepository $userRepo,
+        public MemberRepository $memberRepository
+    ) {
         $this->userRepository = $userRepo;
     }
 
@@ -237,7 +240,13 @@ class UserAPIController extends AppBaseController
      *             required={"name", "email", "password"},
      *             @OA\Property(property="name", type="string", example="John Doe"),
      *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *             @OA\Property(property="password", type="string", format="password", example="password123"),
+     *             @OA\Property(
+     *                 property="community_id",
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 example={1, 2, 3}
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -248,8 +257,14 @@ class UserAPIController extends AppBaseController
      *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="John Doe"),
-     *                 @OA\Property(property="email", type="string", example="user@example.com")
-     *             ),
+     *                 @OA\Property(property="email", type="string", example="user@example.com"),
+     *            @OA\Property(
+     *                 property="community_id",
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 example={1, 2, 3}
+     *             )
+     *          ),
      *             @OA\Property(property="message", type="string", example="User registered successfully")
      *         )
      *     ),
@@ -269,6 +284,7 @@ class UserAPIController extends AppBaseController
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
+            'community_id' => 'required|array',
         ]);
 
         if ($validator->fails()) {
@@ -284,9 +300,21 @@ class UserAPIController extends AppBaseController
             'password'   => Hash::make(request()->password),
         ];
 
-        $this->userRepository->create($data);
+        $lastId = $this->userRepository->create($data);
+
+        foreach (request()->community_id as $communities) {
+            $this->memberRepository->create([
+                "community_id" => $communities,
+                "user_id" => $lastId->id,
+                "join_date" => now(),
+                "status" => 1,
+                "role" => 0,
+                "last_active" => now()
+            ]);
+        }
 
         $user['user'] = $data;
+        $user['user']['category_id'] = request()->community_id;
 
         return $this->sendResponse('Register successfully', $user);
     }

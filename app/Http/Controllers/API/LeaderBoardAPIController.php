@@ -110,7 +110,7 @@ class LeaderBoardAPIController extends AppBaseController
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
-     *         description="ID of the LeaderBoard",
+     *         description="ID of the Community",
      *         required=true,
      *         @OA\Schema(
      *             type="integer"

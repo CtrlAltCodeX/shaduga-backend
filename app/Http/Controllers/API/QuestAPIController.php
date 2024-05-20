@@ -28,16 +28,6 @@ class QuestAPIController extends AppBaseController
      *     summary="Display a listing of the Quests",
      *     operationId="getQuestsList",
      *     tags={"Quests"},
-     *     @OA\Parameter(
-     *         name="Authorization",
-     *         in="header",
-     *         description="Bearer token for authentication",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *         example="Bearer {token}"
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Quests retrieved successfully",
@@ -83,7 +73,8 @@ class QuestAPIController extends AppBaseController
      *             @OA\Property(property="reward", type="string", example="100 points"),
      *             @OA\Property(property="module", type="string", example="Module A"),
      *             @OA\Property(property="sprint", type="integer", example=2),
-     *             @OA\Property(property="status", type="integer", example="1")
+     *             @OA\Property(property="status", type="integer", example="1"),
+     *             @OA\Property(property="user_id", type="integer", example="1")
      *         )
      *     ),
      *     @OA\Response(
@@ -104,7 +95,8 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="reward", type="string", example="100 points"),
      *                 @OA\Property(property="module", type="string", example="Module A"),
      *                 @OA\Property(property="sprint", type="integer", example=2),
-     *                 @OA\Property(property="status", type="integer", example="1")
+     *                 @OA\Property(property="status", type="integer", example="1"),
+     *                 @OA\Property(property="user_id", type="integer", example="1"),
      *             ),
      *             @OA\Property(property="message", type="string", example="Quest saved successfully")
      *         )

@@ -81,12 +81,12 @@ class MemberAPIController extends AppBaseController
      *     ),
      * )
      */
-    public function index(Request $request): JsonResponse
-    {
-        $members = $this->memberRepository->all();
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $members = $this->memberRepository->all();
 
-        return $this->sendResponse($members->toArray(), 'Members retrieved successfully');
-    }
+    //     return $this->sendResponse($members->toArray(), 'Members retrieved successfully');
+    // }
 
     /**
      * Store a newly created Member in storage.
@@ -171,7 +171,7 @@ class MemberAPIController extends AppBaseController
     public function destroy($id): JsonResponse
     {
         /** @var Member $member */
-        $member = $this->memberRepository->find($id);
+        $member = $this->memberRepository->findWhere(['user_id' => $id]);
 
         if (empty($member)) {
             return $this->sendError('Member not found');
@@ -179,6 +179,6 @@ class MemberAPIController extends AppBaseController
 
         $member->delete();
 
-        return $this->sendSuccess('Member deleted successfully');
+        return $this->sendResponse('Member deleted successfully');
     }
 }

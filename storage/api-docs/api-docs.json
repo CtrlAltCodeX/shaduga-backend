@@ -249,7 +249,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the LeaderBoard",
+                        "description": "ID of the Community",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -316,31 +316,6 @@
                 }
             }
         },
-        "/api/members": {
-            "get": {
-                "tags": [
-                    "Members"
-                ],
-                "summary": "Get all members",
-                "description": "Display a listing of the Members.\nGET|HEAD /api/members",
-                "operationId": "c867fc12560e778a9a0525873e627814",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Member"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/members/{id}": {
             "delete": {
                 "tags": [
@@ -378,18 +353,6 @@
                 ],
                 "summary": "Display a listing of the Quests",
                 "operationId": "getQuestsList",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer token for authentication",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "Bearer {token}"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Quests retrieved successfully",
@@ -483,6 +446,10 @@
                                     "status": {
                                         "type": "integer",
                                         "example": "1"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     }
                                 },
                                 "type": "object"
@@ -549,6 +516,10 @@
                                                     "example": 2
                                                 },
                                                 "status": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "user_id": {
                                                     "type": "integer",
                                                     "example": "1"
                                                 }
@@ -1059,6 +1030,17 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "password123"
+                                    },
+                                    "community_id": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -1090,6 +1072,17 @@
                                                 "email": {
                                                     "type": "string",
                                                     "example": "user@example.com"
+                                                },
+                                                "community_id": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer"
+                                                    },
+                                                    "example": [
+                                                        1,
+                                                        2,
+                                                        3
+                                                    ]
                                                 }
                                             },
                                             "type": "object"
@@ -1665,42 +1658,6 @@
                     },
                     "website": {
                         "description": "website of the community",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "Member": {
-                "title": "Member",
-                "description": "Member model",
-                "properties": {
-                    "id": {
-                        "description": "ID of the member",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "community_id": {
-                        "description": "community_id of the member",
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "description": "user_id of the member",
-                        "type": "integer"
-                    },
-                    "join_date": {
-                        "description": "join_date of the member",
-                        "type": "Date"
-                    },
-                    "status": {
-                        "description": "status of the member",
-                        "type": "Integer"
-                    },
-                    "role": {
-                        "description": "role of the member",
-                        "type": "string"
-                    },
-                    "last_active": {
-                        "description": "last_active of the member",
                         "type": "string"
                     }
                 },
