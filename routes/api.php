@@ -44,6 +44,9 @@ Route::resource('leader-boards', App\Http\Controllers\API\LeaderBoardAPIControll
 
 Route::resource('subscriptions', App\Http\Controllers\API\SubscriptionAPIController::class)
     ->except(['create', 'edit']);
+
+Route::resource('tasks', App\Http\Controllers\API\TaskAPIController::class)
+    ->except(['create', 'edit']);
 // });
 
 Route::post('login', [UserAPIController::class, 'login'])->name('login');

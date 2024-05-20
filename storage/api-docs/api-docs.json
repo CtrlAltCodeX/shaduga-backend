@@ -773,6 +773,100 @@
                 }
             }
         },
+        "/api/tasks": {
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Store a newly created Task in storage",
+                "operationId": "storeTask",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "assigned_to",
+                                    "priority",
+                                    "status",
+                                    "start_date",
+                                    "due_date"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Design new logo"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Create a new logo for the website"
+                                    },
+                                    "assigned_to": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "start": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-06-01"
+                                    },
+                                    "end": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-06-01"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "last_updated_by": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task saved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Task"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Task saved successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "tags": [
@@ -1646,6 +1740,46 @@
                         "description": "Last update date of the review",
                         "type": "string",
                         "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Task": {
+                "description": "Task Model",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Design new logo"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Create a new logo for the website"
+                    },
+                    "assigned_to": {
+                        "type": "integer",
+                        "example": "2"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "start": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-06-01"
+                    },
+                    "end": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-06-01"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "last_updated_by": {
+                        "type": "string",
+                        "example": "John Doe"
                     }
                 },
                 "type": "object"

@@ -422,6 +422,11 @@ class UserAPIController extends AppBaseController
 
             $otp = $this->generateOTP(6);
 
+            $user = User::where('email', request()->email)
+                ->first();
+
+            if (!$user) return $this->sendError('Email Id Invalid');
+
             Mail::to(request()->email)->send(new OtpMail($otp));
 
             User::where('email', request()->email)->update([
