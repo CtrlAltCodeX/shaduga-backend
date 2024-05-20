@@ -238,32 +238,80 @@
                 }
             }
         },
-        "/api/leader-boards": {
+        "/api/leader-boards/{id}": {
             "get": {
                 "tags": [
                     "LeaderBoards"
                 ],
-                "summary": "Display a listing of the LeaderBoards",
-                "operationId": "a66578ccca60b55ea6e5057438acfa5f",
+                "summary": "Display the specified LeaderBoard",
+                "operationId": "showLeaderBoard",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the LeaderBoard",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Leader Boards retrieved successfully",
+                        "description": "Leader Board retrieved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/LeaderBoard"
-                                    }
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "id": {
+                                            "description": "LeaderBoard ID",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "user_id of the LeaderBoard",
+                                            "type": "integer"
+                                        },
+                                        "score": {
+                                            "description": "Score of the LeaderBoard",
+                                            "type": "integer"
+                                        },
+                                        "rank": {
+                                            "description": "rank of the LeaderBoard",
+                                            "type": "string"
+                                        },
+                                        "level": {
+                                            "description": "level of the LeaderBoard",
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "500": {
-                        "description": "Internal server error"
+                    "404": {
+                        "description": "Leader Board not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1396,6 +1444,45 @@
                     }
                 }
             }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout the authenticated user",
+                "operationId": "logoutUser",
+                "responses": {
+                    "200": {
+                        "description": "Successfully Logged out",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully Logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1578,38 +1665,6 @@
                     },
                     "website": {
                         "description": "website of the community",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "LeaderBoard": {
-                "title": "LeaderBoard",
-                "description": "LeaderBoard model",
-                "required": [
-                    "id",
-                    "name",
-                    "score"
-                ],
-                "properties": {
-                    "id": {
-                        "description": "LeaderBoard ID",
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "description": "user_id of the LeaderBoard",
-                        "type": "integer"
-                    },
-                    "score": {
-                        "description": "Score of the LeaderBoard",
-                        "type": "integer"
-                    },
-                    "rank": {
-                        "description": "rank of the LeaderBoard",
-                        "type": "string"
-                    },
-                    "level": {
-                        "description": "level of the LeaderBoard",
                         "type": "string"
                     }
                 },

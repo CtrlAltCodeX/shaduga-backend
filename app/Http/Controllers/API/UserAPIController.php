@@ -420,7 +420,7 @@ class UserAPIController extends AppBaseController
                 'email' => 'required'
             ]);
 
-            $otp = $this->generateOTP(6);
+            $otp = $this->generateOTP(4);
 
             $user = User::where('email', request()->email)
                 ->first();
@@ -558,5 +558,36 @@ class UserAPIController extends AppBaseController
         if (!auth()->check()) return $this->sendError('Please Login!!');
 
         return $this->sendResponse('Current User', auth()->user());
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     summary="Logout the authenticated user",
+     *     operationId="logoutUser",
+     *     tags={"Authentication"},
+     *     security={{"BearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully Logged out",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Successfully Logged out")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
+     */
+    public function logout()
+    {
+        if (auth()->check()) {
+            auth()->user()->tokens()->delete();
+        }
+
+        return $this->sendResponse('Successfully Logged out');
     }
 }

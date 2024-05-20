@@ -9,6 +9,7 @@ use App\Repositories\LeaderBoardRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Repositories\MemberRepository;
 
 /**
  * Class LeaderBoardAPIController
@@ -17,8 +18,10 @@ class LeaderBoardAPIController extends AppBaseController
 {
     private LeaderBoardRepository $leaderBoardRepository;
 
-    public function __construct(LeaderBoardRepository $leaderBoardRepo)
-    {
+    public function __construct(
+        LeaderBoardRepository $leaderBoardRepo,
+        public MemberRepository $memberRepo
+    ) {
         $this->leaderBoardRepository = $leaderBoardRepo;
     }
 
@@ -78,12 +81,12 @@ class LeaderBoardAPIController extends AppBaseController
      *     )
      * )
      */
-    public function index(Request $request): JsonResponse
-    {
-        $leaderBoards = $this->leaderBoardRepository->all();
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $leaderBoards = $this->leaderBoardRepository->all();
 
-        return $this->sendResponse($leaderBoards->toArray(), 'Leader Boards retrieved successfully');
-    }
+    //     return $this->sendResponse($leaderBoards->toArray(), 'Leader Boards retrieved successfully');
+    // }
 
     /**
      * Store a newly created LeaderBoard in storage.
@@ -99,13 +102,81 @@ class LeaderBoardAPIController extends AppBaseController
     }
 
     /**
-     * Display the specified LeaderBoard.
-     * GET|HEAD /leader-boards/{id}
+     * @OA\Get(
+     *     path="/api/leader-boards/{id}",
+     *     summary="Display the specified LeaderBoard",
+     *     operationId="showLeaderBoard",
+     *     tags={"LeaderBoards"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the LeaderBoard",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Leader Board retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean"
+     *             ),
+     *     @OA\Property(
+     *         property="id",
+     *         type="integer",
+     *         description="LeaderBoard ID"
+     *     ),
+     *     @OA\Property(
+     *         property="user_id",
+     *         type="integer",
+     *         description="user_id of the LeaderBoard"
+     *     ),
+     *     @OA\Property(
+     *         property="score",
+     *         type="integer",
+     *         description="Score of the LeaderBoard"
+     *     ),
+     *     @OA\Property(
+     *         property="rank",
+     *         type="string",
+     *         description="rank of the LeaderBoard"
+     *     ),
+     *     @OA\Property(
+     *         property="level",
+     *         type="string",
+     *         description="level of the LeaderBoard"
+     *     ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Leader Board not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean"
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string"
+     *             )
+     *         )
+     *     )
+     * )
      */
     public function show($id): JsonResponse
     {
         /** @var LeaderBoard $leaderBoard */
-        $leaderBoard = $this->leaderBoardRepository->find($id);
+        $leaderBoard = $this->memberRepo->findWhere(['community_id' => $id]);
 
         if (empty($leaderBoard)) {
             return $this->sendError('Leader Board not found');
@@ -113,6 +184,7 @@ class LeaderBoardAPIController extends AppBaseController
 
         return $this->sendResponse($leaderBoard->toArray(), 'Leader Board retrieved successfully');
     }
+
 
     /**
      * Update the specified LeaderBoard in storage.
