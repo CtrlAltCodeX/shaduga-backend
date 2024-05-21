@@ -14,7 +14,6 @@ class ReviewRepository extends EloquentBaseRepository
         'title',
         'body',
         'status',
-        'image',
         "bookmarked"
     ];
 

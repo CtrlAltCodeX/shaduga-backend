@@ -78,7 +78,9 @@ class QuestAPIController extends AppBaseController
      *             @OA\Property(property="module", type="string", example="Module A"),
      *             @OA\Property(property="sprint", type="integer", example=2),
      *             @OA\Property(property="status", type="integer", example="1"),
-     *             @OA\Property(property="user_id", type="integer", example="1")
+     *             @OA\Property(property="user_id", type="integer", example="1"),
+     *             @OA\Property(property="image", type="object", example="{}"),
+     * 
      *         )
      *     ),
      *     @OA\Response(
@@ -101,6 +103,7 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="sprint", type="integer", example=2),
      *                 @OA\Property(property="status", type="integer", example="1"),
      *                 @OA\Property(property="user_id", type="integer", example="1"),
+     *                 @OA\Property(property="image", type="object", example="{}"),
      *             ),
      *             @OA\Property(property="message", type="string", example="Quest saved successfully")
      *         )
@@ -119,6 +122,14 @@ class QuestAPIController extends AppBaseController
     public function store(CreateQuestAPIRequest $request): JsonResponse
     {
         $input = $request->all();
+
+        if ($file = $request->file('image')) {
+            $profileImage = time() . "." . $file->getClientOriginalExtension();
+
+            $file->move('storage/quest/', $profileImage);
+
+            $input['image'] = "/storage/quest/" . "$profileImage";
+        }
 
         $quest = $this->questRepository->create($input);
 

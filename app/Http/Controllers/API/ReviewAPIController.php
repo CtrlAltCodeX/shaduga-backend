@@ -72,11 +72,6 @@ class ReviewAPIController extends AppBaseController
      *         description="Status of the review"
      *     ),
      *     @OA\Property(
-     *         property="image",
-     *         type="object",
-     *         description="Image of the review"
-     *     ),
-     *     @OA\Property(
      *         property="bookmarked",
      *         type="integer",
      *         description="Bookmarked of the review"
@@ -175,11 +170,6 @@ class ReviewAPIController extends AppBaseController
      *         description="Status of the review"
      *     ),
      *     @OA\Property(
-     *         property="image",
-     *         type="object",
-     *         description="Image of the review"
-     *     ),
-     *     @OA\Property(
      *         property="bookmarked",
      *         type="integer",
      *         description="Bookmarked of the review"
@@ -205,14 +195,6 @@ class ReviewAPIController extends AppBaseController
     public function store(CreateReviewAPIRequest $request): JsonResponse
     {
         $input = $request->all();
-
-        if ($file = $request->file('image')) {
-            $profileImage = time() . "." . $file->getClientOriginalExtension();
-
-            $file->move('public/review/', $profileImage);
-
-            $input['image'] = "$profileImage";
-        }
 
         $review = $this->reviewRepository->create($input);
 

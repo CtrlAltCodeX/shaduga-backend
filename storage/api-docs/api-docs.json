@@ -450,6 +450,10 @@
                                     "user_id": {
                                         "type": "integer",
                                         "example": "1"
+                                    },
+                                    "image": {
+                                        "type": "object",
+                                        "example": "{}"
                                     }
                                 },
                                 "type": "object"
@@ -522,6 +526,10 @@
                                                 "user_id": {
                                                     "type": "integer",
                                                     "example": "1"
+                                                },
+                                                "image": {
+                                                    "type": "object",
+                                                    "example": "{}"
                                                 }
                                             },
                                             "type": "object"
@@ -1693,10 +1701,6 @@
                         "description": "Status of the review",
                         "type": "integer"
                     },
-                    "image": {
-                        "description": "Image of the review",
-                        "type": "object"
-                    },
                     "bookmarked": {
                         "description": "Bookmarked of the review",
                         "type": "integer"
@@ -1750,10 +1754,6 @@
                     "status": {
                         "description": "Status of the review",
                         "type": "integer"
-                    },
-                    "image": {
-                        "description": "Image of the review",
-                        "type": "object"
                     },
                     "bookmarked": {
                         "description": "Bookmarked of the review",

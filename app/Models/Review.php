@@ -14,7 +14,6 @@ class Review extends Model
         'title',
         'body',
         'status',
-        'image',
         "bookmarked"
     ];
 
@@ -31,7 +30,6 @@ class Review extends Model
         'title' => 'required',
         'body' => 'required',
         'status' => 'required',
-        'image' => "required",
         "bookmarked" => "required"
     ];
 }

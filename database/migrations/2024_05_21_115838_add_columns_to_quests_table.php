@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->tinyInteger("bookmarked");
+        Schema::table('quests', function (Blueprint $table) {
+            $table->string('image');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
+        Schema::table('quests', function (Blueprint $table) {
             //
         });
     }

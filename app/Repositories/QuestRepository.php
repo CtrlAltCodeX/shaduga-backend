@@ -17,6 +17,7 @@ class QuestRepository extends EloquentBaseRepository
         'module',
         'sprint',
         'status',
+        'image',
     ];
 
     public function getFieldsSearchable(): array

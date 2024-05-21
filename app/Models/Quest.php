@@ -18,6 +18,7 @@ class Quest extends Model
         'sprint',
         'status',
         'user_id',
+        'image',
     ];
 
     protected $casts = [
@@ -41,6 +42,7 @@ class Quest extends Model
         'module' => 'required',
         'sprint' => 'required',
         'status' => 'required',
-        'user_id' => 'required'
+        'user_id' => 'required',
+        'image' => 'required'
     ];
 }
