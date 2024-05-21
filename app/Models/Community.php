@@ -15,11 +15,7 @@ class Community extends Model
         'is_blockchain',
         'website',
         'category_id',
-        // 'owner_id',
-        // 'privacy',
-        // 'member_count',
-        // 'post_count',
-        // 'status'
+        'invites'
     ];
 
     protected $casts = [
@@ -28,7 +24,6 @@ class Community extends Model
     ];
 
     public static array $rules = [
-        'logo' => 'required',
         'name' => 'required',
         'description' => 'required',
         'is_blockchain' => 'required',

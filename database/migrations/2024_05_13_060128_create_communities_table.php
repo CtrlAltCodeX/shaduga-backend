@@ -16,11 +16,7 @@ return new class extends Migration
         Schema::create('communities', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
-            $table->integer('owner_id');
-            $table->string('privacy');
-            $table->integer('category_id');
-            $table->integer('member_count');
-            $table->integer('post_count');
+            $table->string('category_id');
             $table->tinyInteger('status');
             $table->timestamps();
         });

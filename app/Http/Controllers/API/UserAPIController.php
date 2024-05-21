@@ -318,7 +318,7 @@ class UserAPIController extends AppBaseController
         }
 
         $user['user'] = $data;
-        $user['user']['category_id'] = request()->community_id;
+        $user['user']['community_id'] = request()->community_id;
 
         return $this->sendResponse('Register successfully', $user);
     }
@@ -454,10 +454,10 @@ class UserAPIController extends AppBaseController
 
             $otp = $this->generateOTP(4);
 
-            $user = User::where('email', request()->email)
-                ->first();
+            // $user = User::where('email', request()->email)
+            //     ->first();
 
-            if (!$user) return $this->sendError('Email Id Invalid');
+            // if (!$user) return $this->sendError('Email Id Invalid');
 
             Mail::to(request()->email)->send(new OtpMail($otp));
 
@@ -510,10 +510,10 @@ class UserAPIController extends AppBaseController
             'email' => 'required',
         ]);
 
-        $user = User::where('email', request()->email)
-            ->first();
+        // $user = User::where('email', request()->email)
+        //     ->first();
 
-        if (!$user) return $this->sendError('Email Id Invalid');
+        // if (!$user) return $this->sendError('Email Id Invalid');
 
         $userWithOTP = User::where('email', request()->email)
             ->where('otp', request()->otp)

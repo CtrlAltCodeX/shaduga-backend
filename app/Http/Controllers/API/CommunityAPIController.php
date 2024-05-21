@@ -59,7 +59,7 @@ class CommunityAPIController extends AppBaseController
      *      ),
      *      @OA\Property(
      *          property="logo",
-     *          type="string",
+     *          type="object",
      *          description="Logo of the community"
      *      ),
      *      @OA\Property(
@@ -69,8 +69,8 @@ class CommunityAPIController extends AppBaseController
      *      ),
      *      @OA\Property(
      *          property="category_id",
-     *          type="integer",
-     *          description="category_id of the community"
+     *          type="string",
+     *          description="string of the community"
      *      ),
      *      @OA\Property(
      *          property="is_blockchain",
@@ -82,6 +82,16 @@ class CommunityAPIController extends AppBaseController
      *          type="string",
      *          description="website of the community"
      *      ),
+     * @OA\Property(
+     *     property="invites",
+     *     type="array",
+     *     description="Invites of the community",
+     *     @OA\Items(
+     *         type="array",
+     *         @OA\Items(type="integer")
+     *     ),
+     *     example={{"admin@example.com", "Role"}, {"user@example.com", "Role"}}
+     * )
      * )
      */
     public function index(Request $request): JsonResponse
@@ -126,6 +136,16 @@ class CommunityAPIController extends AppBaseController
     public function store(CreateCommunityAPIRequest $request): JsonResponse
     {
         $input = $request->all();
+
+        if ($file = $request->file('logo')) {
+            $profileImage = time() . "." . $file->getClientOriginalExtension();
+
+            $file->move('storage/community/', $profileImage);
+
+            $input['logo'] = "/storage/community/" . "$profileImage";
+        }
+
+        $input['invites'] = json_encode($input['invites']);
 
         $community = $this->communityRepository->create($input);
 

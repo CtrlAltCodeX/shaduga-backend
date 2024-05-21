@@ -9,13 +9,13 @@ use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 class CommunityRepository extends EloquentBaseRepository
 {
     protected $fieldSearchable = [
+        'logo',
         'name',
-        'owner_id',
-        'privacy',
+        'description',
+        'is_blockchain',
+        'website',
         'category_id',
-        'member_count',
-        'post_count',
-        'status'
+        'invites'
     ];
 
     public function getFieldsSearchable(): array

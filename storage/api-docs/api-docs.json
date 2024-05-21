@@ -1650,15 +1650,15 @@
                     },
                     "logo": {
                         "description": "Logo of the community",
-                        "type": "string"
+                        "type": "object"
                     },
                     "description": {
                         "description": "description of the community",
                         "type": "string"
                     },
                     "category_id": {
-                        "description": "category_id of the community",
-                        "type": "integer"
+                        "description": "string of the community",
+                        "type": "string"
                     },
                     "is_blockchain": {
                         "description": "is_blockchain of the community",
@@ -1667,6 +1667,26 @@
                     "website": {
                         "description": "website of the community",
                         "type": "string"
+                    },
+                    "invites": {
+                        "description": "Invites of the community",
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        },
+                        "example": [
+                            [
+                                "admin@example.com",
+                                "Role"
+                            ],
+                            [
+                                "user@example.com",
+                                "Role"
+                            ]
+                        ]
                     }
                 },
                 "type": "object"

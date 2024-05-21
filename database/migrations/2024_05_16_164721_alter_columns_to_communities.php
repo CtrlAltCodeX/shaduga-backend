@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('communities', function (Blueprint $table) {
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->text('description');
             $table->tinyInteger('is_blockchain');
             $table->string('website');
+            $table->text('invities')->nullable();
             // $table->integer('category_id');
         });
     }
