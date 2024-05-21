@@ -13,7 +13,9 @@ class Review extends Model
         'rating',
         'title',
         'body',
-        'status'
+        'status',
+        'image',
+        "bookmarked"
     ];
 
     protected $casts = [
@@ -28,8 +30,8 @@ class Review extends Model
         'rating' => 'required',
         'title' => 'required',
         'body' => 'required',
-        'status' => 'required'
+        'status' => 'required',
+        'image' => "required",
+        "bookmarked" => "required"
     ];
-
-    
 }

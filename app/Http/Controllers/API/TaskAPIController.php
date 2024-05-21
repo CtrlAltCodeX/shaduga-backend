@@ -28,7 +28,11 @@ class TaskAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $tasks = $this->taskRepository->all();
+        $tasks = $this->taskRepository->all(
+            ['*'],
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
         return $this->sendResponse($tasks->toArray(), 'Tasks retrieved successfully');
     }

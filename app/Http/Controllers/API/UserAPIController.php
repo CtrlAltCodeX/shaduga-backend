@@ -36,7 +36,11 @@ class UserAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $users = $this->userRepository->all();
+        $users = $this->userRepository->all(
+            ['*'],
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
         return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
     }

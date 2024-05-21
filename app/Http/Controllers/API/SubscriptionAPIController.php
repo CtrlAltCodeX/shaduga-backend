@@ -117,7 +117,11 @@ class SubscriptionAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $subscriptions = $this->subscriptionRepository->all();
+        $subscriptions = $this->subscriptionRepository->all(
+            ['*'],
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
         return $this->sendResponse($subscriptions->toArray(), 'Subscriptions retrieved successfully');
     }

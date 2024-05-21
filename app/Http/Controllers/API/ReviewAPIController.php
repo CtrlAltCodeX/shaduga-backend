@@ -62,7 +62,7 @@ class ReviewAPIController extends AppBaseController
      *         description="Title"
      *     ),
      *     @OA\Property(
-     *         property="content",
+     *         property="body",
      *         type="string",
      *         description="Content of the review"
      *     ),
@@ -70,6 +70,16 @@ class ReviewAPIController extends AppBaseController
      *         property="status",
      *         type="integer",
      *         description="Status of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="image",
+     *         type="object",
+     *         description="Image of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="bookmarked",
+     *         type="integer",
+     *         description="Bookmarked of the review"
      *     ),
      *     @OA\Property(
      *         property="created_at",
@@ -91,7 +101,7 @@ class ReviewAPIController extends AppBaseController
     public function index(Request $request): JsonResponse
     {
         $reviews = $this->reviewRepository->all(
-            $request->except(['skip', 'limit']),
+            ['*'],
             $request->get('skip'),
             $request->get('limit')
         );
@@ -155,7 +165,7 @@ class ReviewAPIController extends AppBaseController
      *         description="Title"
      *     ),
      *     @OA\Property(
-     *         property="content",
+     *         property="body",
      *         type="string",
      *         description="Content of the review"
      *     ),
@@ -163,6 +173,16 @@ class ReviewAPIController extends AppBaseController
      *         property="status",
      *         type="integer",
      *         description="Status of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="image",
+     *         type="object",
+     *         description="Image of the review"
+     *     ),
+     *     @OA\Property(
+     *         property="bookmarked",
+     *         type="integer",
+     *         description="Bookmarked of the review"
      *     ),
      *     @OA\Property(
      *         property="created_at",
@@ -185,6 +205,14 @@ class ReviewAPIController extends AppBaseController
     public function store(CreateReviewAPIRequest $request): JsonResponse
     {
         $input = $request->all();
+
+        if ($file = $request->file('image')) {
+            $profileImage = time() . "." . $file->getClientOriginalExtension();
+
+            $file->move('public/review/', $profileImage);
+
+            $input['image'] = "$profileImage";
+        }
 
         $review = $this->reviewRepository->create($input);
 

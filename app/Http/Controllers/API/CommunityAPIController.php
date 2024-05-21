@@ -86,7 +86,11 @@ class CommunityAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $communities = $this->communityRepository->all();
+        $communities = $this->communityRepository->all(
+            ['*'],
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
         return $this->sendResponse($communities->toArray(), 'Communities retrieved successfully');
     }

@@ -94,7 +94,11 @@ class ChatAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $chats = $this->chatRepository->all();
+        $chats = $this->chatRepository->all(
+            ['*'],
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
         return $this->sendResponse($chats->toArray(), 'Chats retrieved successfully');
     }

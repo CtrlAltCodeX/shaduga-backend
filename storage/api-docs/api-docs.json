@@ -1685,12 +1685,20 @@
                         "type": "integer",
                         "format": "int64"
                     },
-                    "content": {
+                    "body": {
                         "description": "Content of the review",
                         "type": "string"
                     },
                     "status": {
                         "description": "Status of the review",
+                        "type": "integer"
+                    },
+                    "image": {
+                        "description": "Image of the review",
+                        "type": "object"
+                    },
+                    "bookmarked": {
+                        "description": "Bookmarked of the review",
                         "type": "integer"
                     },
                     "created_at": {
@@ -1735,12 +1743,20 @@
                         "type": "integer",
                         "format": "int64"
                     },
-                    "content": {
+                    "body": {
                         "description": "Content of the review",
                         "type": "string"
                     },
                     "status": {
                         "description": "Status of the review",
+                        "type": "integer"
+                    },
+                    "image": {
+                        "description": "Image of the review",
+                        "type": "object"
+                    },
+                    "bookmarked": {
+                        "description": "Bookmarked of the review",
                         "type": "integer"
                     },
                     "created_at": {

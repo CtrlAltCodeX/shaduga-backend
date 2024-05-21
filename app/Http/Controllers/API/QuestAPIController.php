@@ -47,7 +47,11 @@ class QuestAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $quests = $this->questRepository->all();
+        $quests = $this->questRepository->all(
+            ['*'],
+            $request->get('skip'),
+            $request->get('limit')
+        );
 
         return $this->sendResponse($quests->toArray(), 'Quests retrieved successfully');
     }
