@@ -26,10 +26,10 @@ class Member extends Model
     ];
 
     public static array $rules = [
-        'community_id' => 'requreid',
+        'community_id' => 'required',
         'user_id' => 'required',
-        'join_date' => 'requried',
-        'status' => 'requreid',
+        'join_date' => 'required',
+        'status' => 'required',
         'role' => 'required',
         'last_active' => 'required'
     ];

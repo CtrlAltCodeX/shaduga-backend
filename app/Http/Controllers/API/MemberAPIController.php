@@ -89,8 +89,143 @@ class MemberAPIController extends AppBaseController
     // }
 
     /**
-     * Store a newly created Member in storage.
-     * POST /members
+     * @OA\Post(
+     *     path="/api/members",
+     *     operationId="storeMember",
+     *     tags={"Members"},
+     *     summary="Store a newly created Member",
+     *     description="Stores a new member in the database.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/CreateMemberAPIRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=true
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 ref="#/components/schemas/Member"
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Member saved successfully"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Bad Request"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Internal Server Error"
+     *             )
+     *         )
+     *     )
+     * )
+     * 
+     * * @OA\Schema(
+     *     schema="CreateMemberAPIRequest",
+     *     type="object",
+     *     required={"name", "email"},
+     *     @OA\Property(
+     *         property="community_id",
+     *         type="integer",
+     *         description="ID of the member"
+     *     ),
+     *     @OA\Property(
+     *         property="user_id",
+     *         type="integer",
+     *         description="user_id of the member"
+     *     ),
+     *     @OA\Property(
+     *         property="join_date",
+     *         type="date",
+     *         description="join_date of the member"
+     *     ),
+     *     @OA\Property(
+     *         property="status",
+     *         type="integer",
+     *         description="Creation timestamp"
+     *     ),
+     *     @OA\Property(
+     *         property="role",
+     *         type="string",
+     *         description="role timestamp"
+     *     ),
+     *     @OA\Property(
+     *         property="last_active",
+     *         type="date",
+     *         description="last_active timestamp"
+     *     ),
+     * )
+     * 
+     * * @OA\Schema(
+     *     schema="Member",
+     *     type="object",
+     *     @OA\Property(
+     *         property="community_id",
+     *         type="integer",
+     *         description="ID of the member"
+     *     ),
+     *     @OA\Property(
+     *         property="user_id",
+     *         type="integer",
+     *         description="user_id of the member"
+     *     ),
+     *     @OA\Property(
+     *         property="join_date",
+     *         type="date",
+     *         description="join_date of the member"
+     *     ),
+     *     @OA\Property(
+     *         property="status",
+     *         type="integer",
+     *         description="Creation timestamp"
+     *     ),
+     *     @OA\Property(
+     *         property="role",
+     *         type="string",
+     *         description="role timestamp"
+     *     ),
+     *     @OA\Property(
+     *         property="last_active",
+     *         type="date",
+     *         description="last_active timestamp"
+     *     ),
+     * )
      */
     public function store(CreateMemberAPIRequest $request): JsonResponse
     {
@@ -100,6 +235,7 @@ class MemberAPIController extends AppBaseController
 
         return $this->sendResponse($member->toArray(), 'Member saved successfully');
     }
+
 
     /**
      * Display the specified Member.

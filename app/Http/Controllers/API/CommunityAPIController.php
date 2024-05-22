@@ -9,6 +9,8 @@ use App\Repositories\CommunityRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Mail\InviteMail;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class CommunityAPIController
@@ -83,9 +85,9 @@ class CommunityAPIController extends AppBaseController
      *          description="website of the community"
      *      ),
      * @OA\Property(
-     *     property="invites",
+     *     property="invitation",
      *     type="array",
-     *     description="Invites of the community",
+     *     description="Invitation of the community",
      *     @OA\Items(
      *         type="array",
      *         @OA\Items(type="integer")
@@ -145,11 +147,20 @@ class CommunityAPIController extends AppBaseController
             $input['logo'] = "/storage/community/" . "$profileImage";
         }
 
-        $input['invites'] = json_encode($input['invites']);
+        $input['invites'] = json_encode($input['invitation']);
 
         $community = $this->communityRepository->create($input);
 
-        return $this->sendResponse($community->toArray(), 'Community saved successfully');
+        $input['link'] = url('/') . "/$community->name" . $community->id;
+
+        $data = $community->toArray();
+        $data['link'] = $input['link'];
+
+        foreach ($input['invitation'] as $invities) {
+            Mail::to($invities[0])->send(new InviteMail($input['link']));
+        }
+
+        return $this->sendResponse($data, 'Community saved successfully');
     }
 
     /**

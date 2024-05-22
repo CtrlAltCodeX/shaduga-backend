@@ -15,7 +15,8 @@ class Community extends Model
         'is_blockchain',
         'website',
         'category_id',
-        'invites'
+        'invites',
+        'link',
     ];
 
     protected $casts = [
@@ -29,6 +30,7 @@ class Community extends Model
         'is_blockchain' => 'required',
         'website' => 'required',
         'category_id' => 'required',
+        'link' => 'required',
         // 'owner_id' => 'required',
         // 'privacy' => 'required',
         // 'member_count' => 'requried',
