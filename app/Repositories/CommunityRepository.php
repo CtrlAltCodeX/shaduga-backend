@@ -14,8 +14,9 @@ class CommunityRepository extends EloquentBaseRepository
         'description',
         'is_blockchain',
         'website',
-        'category_id',
-        'invites'
+        'categories',
+        'invites',
+        'link',
     ];
 
     public function getFieldsSearchable(): array

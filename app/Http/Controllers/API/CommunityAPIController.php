@@ -70,10 +70,11 @@ class CommunityAPIController extends AppBaseController
      *          description="description of the community"
      *      ),
      *      @OA\Property(
-     *          property="category_id",
-     *          type="string",
-     *          description="string of the community"
-     *      ),
+     *           property="categories",
+     *           type="array",
+     *           @OA\Items(type="string"),
+     *           example={"categories", "categories", "categories"}
+     *       ),
      *      @OA\Property(
      *          property="is_blockchain",
      *          type="integer",
@@ -83,6 +84,11 @@ class CommunityAPIController extends AppBaseController
      *          property="website",
      *          type="string",
      *          description="website of the community"
+     *      ),
+     *      @OA\Property(
+     *          property="link",
+     *          type="string",
+     *          description="link of the community"
      *      ),
      * @OA\Property(
      *     property="invitation",
@@ -137,30 +143,38 @@ class CommunityAPIController extends AppBaseController
      */
     public function store(CreateCommunityAPIRequest $request): JsonResponse
     {
-        $input = $request->all();
+        try {
+            $input = $request->all();
 
-        if ($file = $request->file('logo')) {
-            $profileImage = time() . "." . $file->getClientOriginalExtension();
+            if ($file = $request->file('logo')) {
+                $profileImage = time() . "." . $file->getClientOriginalExtension();
 
-            $file->move('storage/community/', $profileImage);
+                $file->move('storage/community/', $profileImage);
 
-            $input['logo'] = "/storage/community/" . "$profileImage";
+                $input['logo'] = "/storage/community/" . "$profileImage";
+            }
+
+            $input['categories'] = implode(',', $input['categories']);
+
+            $input['invites'] = json_encode($input['invitation']);
+
+            $community = $this->communityRepository->create($input);
+
+            $input['link'] = url('/') . "/$community->name" . $community->id;
+
+            $data = $community->toArray();
+            $data['link'] = $input['link'];
+
+            foreach ($input['invitation'] as $invities) {
+                if (isset($invities[0])) {
+                    Mail::to($invities[0])->send(new InviteMail($input['link']));
+                }
+            }
+
+            return $this->sendResponse($data, 'Community saved successfully');
+        } catch (\Exception $e) {
+            return $this->sendError($e->getMessage());
         }
-
-        $input['invites'] = json_encode($input['invitation']);
-
-        $community = $this->communityRepository->create($input);
-
-        $input['link'] = url('/') . "/$community->name" . $community->id;
-
-        $data = $community->toArray();
-        $data['link'] = $input['link'];
-
-        foreach ($input['invitation'] as $invities) {
-            Mail::to($invities[0])->send(new InviteMail($input['link']));
-        }
-
-        return $this->sendResponse($data, 'Community saved successfully');
     }
 
     /**

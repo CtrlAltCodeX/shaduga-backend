@@ -14,7 +14,7 @@ class Community extends Model
         'description',
         'is_blockchain',
         'website',
-        'category_id',
+        'categories',
         'invites',
         'link',
     ];
@@ -29,8 +29,7 @@ class Community extends Model
         'description' => 'required',
         'is_blockchain' => 'required',
         'website' => 'required',
-        'category_id' => 'required',
-        'link' => 'required',
+        'categories' => 'required',
         // 'owner_id' => 'required',
         // 'privacy' => 'required',
         // 'member_count' => 'requried',

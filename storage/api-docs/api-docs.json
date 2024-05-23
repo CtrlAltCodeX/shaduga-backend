@@ -1741,9 +1741,16 @@
                         "description": "description of the community",
                         "type": "string"
                     },
-                    "category_id": {
-                        "description": "string of the community",
-                        "type": "string"
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "categories",
+                            "categories",
+                            "categories"
+                        ]
                     },
                     "is_blockchain": {
                         "description": "is_blockchain of the community",
@@ -1751,6 +1758,10 @@
                     },
                     "website": {
                         "description": "website of the community",
+                        "type": "string"
+                    },
+                    "link": {
+                        "description": "link of the community",
                         "type": "string"
                     },
                     "invitation": {
