@@ -258,17 +258,19 @@ class UserAPIController extends AppBaseController
      *         description="User registered successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="boolean", example=true),
-     *             @OA\Property(property="user", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="John Doe"),
-     *                 @OA\Property(property="email", type="string", example="user@example.com"),
-     *            @OA\Property(
-     *                 property="community_id",
-     *                 type="array",
-     *                 @OA\Items(type="integer"),
-     *                 example={1, 2, 3}
-     *             )
-     *          ),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="John Doe"),
+     *                     @OA\Property(property="email", type="string", example="user@example.com"),
+     *                     @OA\Property(
+     *                          property="community_id",
+     *                          type="array",
+     *                          @OA\Items(type="integer"),
+     *                          example={1, 2, 3}
+     *                      )
+     *                 )
+     *             ),
      *             @OA\Property(property="message", type="string", example="User registered successfully")
      *         )
      *     ),
@@ -383,6 +385,12 @@ class UserAPIController extends AppBaseController
                 'message' => $validator->errors()
             ], 400);
         }
+
+        $userIsActive = User::where('status', 1)
+            ->where('email', request()->email)
+            ->first();
+
+        if (!$userIsActive) return $this->sendError('User is not active');
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return $this->sendError('Unauthorized');
@@ -521,6 +529,10 @@ class UserAPIController extends AppBaseController
 
         if (!$userWithOTP) return $this->sendError('Invalid OTP');
 
+        User::where('email', request()->email)
+            ->where('otp', request()->otp)
+            ->update(['status' => 1]);
+
         return $this->sendResponse('OTP successfully matched');
     }
 
@@ -543,20 +555,22 @@ class UserAPIController extends AppBaseController
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
-     *                 @OA\Property(
-     *                     property="id",
-     *                     type="integer",
-     *                     example=1
-     *                 ),
-     *                 @OA\Property(
-     *                     property="name",
-     *                     type="string",
-     *                     example="John Doe"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="email",
-     *                     type="string",
-     *                     example="johndoe@example.com"
+     *                 @OA\Property(property="user", type="object",
+     *                      @OA\Property(
+     *                          property="id",
+     *                          type="integer",
+     *                          example=1
+     *                      ),
+     *                      @OA\Property(
+     *                          property="name",
+     *                          type="string",
+     *                          example="John Doe"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string",
+     *                          example="johndoe@example.com"
+     *                      )
      *                 )
      *             ),
      *             @OA\Property(
