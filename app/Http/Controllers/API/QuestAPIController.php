@@ -221,13 +221,94 @@ class QuestAPIController extends AppBaseController
 
 
     /**
-     * Display the specified Quest.
-     * GET|HEAD /quests/{id}
+     * @OA\Get(
+     *     path="/api/quests/{category}",
+     *     summary="Display the specified Quest",
+     *     description="Retrieve a quest by its category.",
+     *     operationId="getQuestByCategory",
+     *     tags={"Quests"},
+     *     @OA\Parameter(
+     *         name="category",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="The category of the quest"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Quest retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object", 
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Quest name"),
+     *                 @OA\Property(property="description", type="string", example="Quest description"),
+     *                 @OA\Property(property="difficulty", type="string", example="easy"),
+     *                 @OA\Property(property="recurrence", type="string", example="daily"),
+     *                 @OA\Property(property="cooldown", type="integer", example=24),
+     *                 @OA\Property(property="claim_time", type="string", format="date-time", example="2024-05-18T00:00:00Z"),
+     *                 @OA\Property(property="condition", type="string", example="Complete 3 tasks"),
+     *                 @OA\Property(property="reward", type="string", example="100 points"),
+     *                 @OA\Property(property="module", type="string", example="Module A"),
+     *                 @OA\Property(property="sprint", type="integer", example=2),
+     *                 @OA\Property(property="status", type="integer", example="1"),
+     *                 @OA\Property(property="user_id", type="integer", example="1"),
+     *                 @OA\Property(property="image", type="object", example="{}"),
+     *                 @OA\Property(property="category", type="string", example="{}"),
+     *                 @OA\Property(
+     *                     property="additionals",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="object",
+     *                         @OA\Property(property="link", type="string", example="link"),
+     *                         @OA\Property(property="task_type", type="string", example="link"),
+     *                         @OA\Property(property="number_invitation", type="string", example=1),
+     *                         @OA\Property(property="description", type="string", example="For API"),
+     *                         @OA\Property(property="endpoint", type="string", example="For API"),
+     *                         @OA\Property(property="methods", type="string", example="For API"),
+     *                         @OA\Property(property="api_key", type="string", example="For API"),
+     *                         @OA\Property(property="partnership", type="string", example="for partnership link"),
+     *                         @OA\Property(property="request_type", type="string", example="text, url, number"),
+     *                         @OA\Property(property="correct_answer", type="string", example="for answer"),
+     *                         @OA\Property(property="stars", type="string", example="2"),
+     *                         @OA\Property(property="steps", type="string", example="0 to 10"),
+     *                         @OA\Property(property="labels", type="string", example="0 to 10"),
+     *                         @OA\Property(
+     *                             property="files",
+     *                             type="array",
+     *                             @OA\Items(type="object"),
+     *                             example={"object", "object", "object"}
+     *                         )
+     *                     )
+     *                 )
+     *             ),
+     *             @OA\Property(property="message", type="string", example="Quest saved successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Quest not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Quest not found"
+     *             )
+     *         )
+     *     )
+     * )
      */
-    public function show($id): JsonResponse
+    public function show($category): JsonResponse
     {
         /** @var Quest $quest */
-        $quest = $this->questRepository->find($id);
+        $quest = $this->questRepository->with('additionals')->findByField('category', $category);
 
         if (empty($quest)) {
             return $this->sendError('Quest not found');
