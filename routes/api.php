@@ -55,3 +55,7 @@ Route::post('register', [UserAPIController::class, 'register'])->name('register'
 Route::post('send/otp', [UserAPIController::class, 'sendOTP']);
 
 Route::post('verify/otp', [UserAPIController::class, 'verifyOTP']);
+
+Route::post('forget-password', [UserAPIController::class, 'forgetPassword']);
+
+Route::post('reset-password', [UserAPIController::class, 'resetPassword']);

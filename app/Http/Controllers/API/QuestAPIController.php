@@ -9,6 +9,7 @@ use App\Repositories\QuestRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Models\QuestAdditional;
 
 /**
  * Class QuestAPIController
@@ -17,8 +18,10 @@ class QuestAPIController extends AppBaseController
 {
     private QuestRepository $questRepository;
 
-    public function __construct(QuestRepository $questRepo)
-    {
+    public function __construct(
+        QuestRepository $questRepo,
+        public QuestAdditional $questRepoAdditional
+    ) {
         $this->questRepository = $questRepo;
     }
 
@@ -47,7 +50,7 @@ class QuestAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $quests = $this->questRepository->all(
+        $quests = $this->questRepository->with('additionals')->all(
             ['*'],
             $request->get('skip'),
             $request->get('limit')
@@ -77,10 +80,36 @@ class QuestAPIController extends AppBaseController
      *             @OA\Property(property="reward", type="string", example="100 points"),
      *             @OA\Property(property="module", type="string", example="Module A"),
      *             @OA\Property(property="sprint", type="integer", example=2),
-     *             @OA\Property(property="status", type="integer", example="1"),
+     *             @OA\Property(property="status", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example="1"),
      *             @OA\Property(property="image", type="object", example="{}"),
-     * 
+     *             @OA\Property(property="category", type="string", example="{}"),
+     *             @OA\Property(
+     *                 property="additionals",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="link", type="string", example="link"),
+     *                     @OA\Property(property="task_type", type="string", example="link"),
+     *                     @OA\Property(property="number_invitation", type="string", example=1),
+     *                     @OA\Property(property="description", type="string", example="For API"),
+     *                     @OA\Property(property="endpoint", type="string", example="For API"),
+     *                     @OA\Property(property="methods", type="string", example="For API"),
+     *                     @OA\Property(property="api_key", type="string", example="For API"),
+     *                     @OA\Property(property="partnership", type="string", example="for partnership link"),
+     *                     @OA\Property(property="request_type", type="string", example="text, url, number"),
+     *                     @OA\Property(property="correct_answer", type="string", example="for answer"),
+     *                     @OA\Property(property="stars", type="string", example="2"),
+     *                     @OA\Property(property="steps", type="string", example="0 to 10"),
+     *                     @OA\Property(property="labels", type="string", example="0 to 10"),
+     *                     @OA\Property(
+     *                         property="files",
+     *                         type="array",
+     *                         @OA\Items(type="object"),
+     *                         example={"object", "object", "object"}
+     *                     )
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -104,6 +133,33 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="status", type="integer", example="1"),
      *                 @OA\Property(property="user_id", type="integer", example="1"),
      *                 @OA\Property(property="image", type="object", example="{}"),
+     *                 @OA\Property(property="category", type="string", example="{}"),
+     *                 @OA\Property(
+     *                     property="additionals",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="object",
+     *                         @OA\Property(property="link", type="string", example="link"),
+     *                         @OA\Property(property="task_type", type="string", example="link"),
+     *                         @OA\Property(property="number_invitation", type="string", example=1),
+     *                         @OA\Property(property="description", type="string", example="For API"),
+     *                         @OA\Property(property="endpoint", type="string", example="For API"),
+     *                         @OA\Property(property="methods", type="string", example="For API"),
+     *                         @OA\Property(property="api_key", type="string", example="For API"),
+     *                         @OA\Property(property="partnership", type="string", example="for partnership link"),
+     *                         @OA\Property(property="request_type", type="string", example="text, url, number"),
+     *                         @OA\Property(property="correct_answer", type="string", example="for answer"),
+     *                         @OA\Property(property="stars", type="string", example="2"),
+     *                         @OA\Property(property="steps", type="string", example="0 to 10"),
+     *                         @OA\Property(property="labels", type="string", example="0 to 10"),
+     *                         @OA\Property(
+     *                             property="files",
+     *                             type="array",
+     *                             @OA\Items(type="object"),
+     *                             example={"object", "object", "object"}
+     *                         )
+     *                     )
+     *                 )
      *             ),
      *             @OA\Property(property="message", type="string", example="Quest saved successfully")
      *         )
@@ -133,7 +189,34 @@ class QuestAPIController extends AppBaseController
 
         $quest = $this->questRepository->create($input);
 
-        return $this->sendResponse($quest->toArray(), 'Quest saved successfully');
+        foreach ($input['additionals'] as $additionals) {
+            $additionals['quest_id'] = $quest->id;
+
+            if (isset($additionals['files'])) {
+                $files = $additionals['files'];
+                $images = [];
+                foreach ($additionals['files'] as $file) {
+                    $getFile = time() . "." . $file->getClientOriginalExtension();
+
+                    $file->move('storage/quest/', $getFile);
+
+                    $images['image'][] = "/storage/quest/" . "$getFile";
+                }
+
+                $additionals['files'] = implode(',', $images['image']);
+            }
+
+            $this->questRepoAdditional->create($additionals);
+        }
+
+        $questAdditional = QuestAdditional::where('quest_id', $quest->id)
+            ->get()
+            ->toArray();
+
+        $data = $quest->toArray();
+        $data['additional'] = $questAdditional;
+
+        return $this->sendResponse($data, 'Quest saved successfully');
     }
 
 

@@ -2,23 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Models\Quest;
+use App\Models\QuestAdditional;
 use App\Repositories\BaseRepository;
 use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 
-class QuestRepository extends EloquentBaseRepository
+class QuestAdditionalRepository extends EloquentBaseRepository
 {
     protected $fieldSearchable = [
-        'recurrence',
-        'cooldown',
-        'claim_time',
-        'condition',
-        'reward',
-        'module',
-        'sprint',
-        'status',
-        'image',
-        'category',
+        'quest_id',
+        'link',
+        'partnership',
+        'number_invitation',
+        'description',
+        'endpoint',
+        'api_key',
+        'methods',
+        'task_type',
     ];
 
     public function getFieldsSearchable(): array
@@ -28,6 +27,6 @@ class QuestRepository extends EloquentBaseRepository
 
     public function model(): string
     {
-        return Quest::class;
+        return QuestAdditional::class;
     }
 }

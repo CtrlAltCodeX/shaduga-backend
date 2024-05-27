@@ -19,6 +19,7 @@ class Quest extends Model
         'status',
         'user_id',
         'image',
+        'category',
     ];
 
     protected $casts = [
@@ -43,6 +44,11 @@ class Quest extends Model
         'sprint' => 'required',
         'status' => 'required',
         'user_id' => 'required',
-        'image' => 'required'
+        'category' => 'required'
     ];
+
+    public function additionals()
+    {
+        return $this->hasMany(QuestAdditional::class);
+    }
 }
