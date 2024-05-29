@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Models\QuestAdditional;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Class QuestAPIController
@@ -82,8 +83,8 @@ class QuestAPIController extends AppBaseController
      *             @OA\Property(property="sprint", type="integer", example=2),
      *             @OA\Property(property="status", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example="1"),
-     *             @OA\Property(property="image", type="object", example="{}"),
-     *             @OA\Property(property="category", type="string", example="{}"),
+     *             @OA\Property(property="image", type="object", example=""),
+     *             @OA\Property(property="category", type="string", example="category"),
      *             @OA\Property(
      *                 property="additionals",
      *                 type="array",
@@ -132,8 +133,8 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="sprint", type="integer", example=2),
      *                 @OA\Property(property="status", type="integer", example="1"),
      *                 @OA\Property(property="user_id", type="integer", example="1"),
-     *                 @OA\Property(property="image", type="object", example="{}"),
-     *                 @OA\Property(property="category", type="string", example="{}"),
+     *                 @OA\Property(property="image", type="object", example=""),
+     *                 @OA\Property(property="category", type="string", example="category"),
      *                 @OA\Property(
      *                     property="additionals",
      *                     type="array",
@@ -180,11 +181,13 @@ class QuestAPIController extends AppBaseController
         $input = $request->all();
 
         if ($file = $request->file('image')) {
-            $profileImage = time() . "." . $file->getClientOriginalExtension();
+            if ($file instanceof UploadedFile) {
+                $profileImage = time() . "." . $file->getClientOriginalExtension();
 
-            $file->move('storage/quest/', $profileImage);
+                $file->move('storage/quest/', $profileImage);
 
-            $input['image'] = "/storage/quest/" . "$profileImage";
+                $input['image'] = "/storage/quest/" . "$profileImage";
+            }
         }
 
         $quest = $this->questRepository->create($input);
@@ -196,14 +199,18 @@ class QuestAPIController extends AppBaseController
                 $files = $additionals['files'];
                 $images = [];
                 foreach ($additionals['files'] as $file) {
-                    $getFile = time() . "." . $file->getClientOriginalExtension();
+                    if ($file instanceof UploadedFile) {
+                        $getFile = time() . "." . $file->getClientOriginalExtension();
 
-                    $file->move('storage/quest/', $getFile);
+                        $file->move('storage/quest/', $getFile);
 
-                    $images['image'][] = "/storage/quest/" . "$getFile";
+                        $images['image'][] = "/storage/quest/" . "$getFile";
+                    }
                 }
 
-                $additionals['files'] = implode(',', $images['image']);
+                if (isset($images['image'])) {
+                    $additionals['files'] = implode(',', $images['image']);
+                }
             }
 
             $this->questRepoAdditional->create($additionals);

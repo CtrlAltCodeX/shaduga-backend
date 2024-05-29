@@ -286,41 +286,39 @@ class UserAPIController extends AppBaseController
      */
     public function register()
     {
-        $validator = Validator::make(request()->all(), [
+        request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'password' => 'required',
-            'community_id' => 'required|array',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()
-            ], 400);
-        }
 
         $data = [
             'name'       => request()->name,
-            'email'      => request()->email,
+            'email'       => request()->email,
             'password'   => Hash::make(request()->password),
         ];
 
-        $lastId = $this->userRepository->create($data);
+        $fieldByEmail = $this->userRepository->findByField('email', request()->email)->first();
 
-        foreach (request()->community_id as $communities) {
-            $this->memberRepository->create([
-                "community_id" => $communities,
-                "user_id" => $lastId->id,
-                "join_date" => now(),
-                "status" => 1,
-                "role" => 0,
-                "last_active" => now()
-            ]);
+        if (!$fieldByEmail || !$fieldByEmail->status) return $this->sendError('User does not exist or not Active');
+
+        $fieldByEmail->update($data);
+
+        if (isset(request()->community_id)) {
+            foreach (request()->community_id as $communities) {
+                $this->memberRepository->create([
+                    "community_id" => $communities,
+                    "user_id" => $lastId->id,
+                    "join_date" => now(),
+                    "status" => 1,
+                    "role" => 0,
+                    "last_active" => now()
+                ]);
+            }
         }
 
         $user['user'] = $data;
-        $user['user']['community_id'] = request()->community_id;
+        $user['user']['community_id'] = request()->community_id ?? [];
 
         return $this->sendResponse('Register successfully', $user);
     }
@@ -374,17 +372,10 @@ class UserAPIController extends AppBaseController
      */
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required',
+        request()->validate([
+            'email' => 'required|email',
             'password' => 'required',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()
-            ], 400);
-        }
 
         $userIsActive = User::where('status', 1)
             ->where('email', request()->email)
@@ -457,16 +448,14 @@ class UserAPIController extends AppBaseController
     {
         try {
             request()->validate([
-                'email' => 'required'
+                'email' => 'required|email|unique:users,email'
             ]);
 
             $otp = $this->generateOTP(4);
 
-            Mail::to(request()->email)->send(new OtpMail($otp));
+            $this->userRepository->create(['email' => request()->email, 'otp' => $otp]);
 
-            User::where('email', request()->email)->update([
-                'otp' => $otp
-            ]);
+            Mail::to(request()->email)->send(new OtpMail($otp));
 
             return $this->sendResponse('OTP send successfully');
         } catch (\Exception $e) {
