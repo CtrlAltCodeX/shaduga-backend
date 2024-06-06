@@ -17,6 +17,7 @@ class CommunityRepository extends EloquentBaseRepository
         'categories',
         'invites',
         'link',
+        'user_id',
     ];
 
     public function getFieldsSearchable(): array

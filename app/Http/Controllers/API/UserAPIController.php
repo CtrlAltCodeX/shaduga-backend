@@ -308,7 +308,7 @@ class UserAPIController extends AppBaseController
             foreach (request()->community_id as $communities) {
                 $this->memberRepository->create([
                     "community_id" => $communities,
-                    "user_id" => $lastId->id,
+                    "user_id" => $fieldByEmail->id,
                     "join_date" => now(),
                     "status" => 1,
                     "role" => 0,

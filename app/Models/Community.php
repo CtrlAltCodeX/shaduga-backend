@@ -17,6 +17,7 @@ class Community extends Model
         'categories',
         'invites',
         'link',
+        'user_id'
     ];
 
     protected $casts = [
@@ -35,5 +36,10 @@ class Community extends Model
         // 'member_count' => 'requried',
         // 'post_count' => 'requried',
         // 'status' => 'required'
-    ];    
+    ];
+
+    public function join()
+    {
+        return $this->hasMany(Member::class);
+    }
 }

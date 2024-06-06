@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Mail\InviteMail;
+use App\Repositories\MemberRepository;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -19,8 +20,10 @@ class CommunityAPIController extends AppBaseController
 {
     private CommunityRepository $communityRepository;
 
-    public function __construct(CommunityRepository $communityRepo)
-    {
+    public function __construct(
+        CommunityRepository $communityRepo,
+        public MemberRepository $memberRepository
+    ) {
         $this->communityRepository = $communityRepo;
     }
 
@@ -136,9 +139,6 @@ class CommunityAPIController extends AppBaseController
      *          response=422,
      *          description="Unprocessable Entity"
      *      ),
-     *      security={
-     *          {"bearerAuth": {}}
-     *      }
      * )
      */
     public function store(CreateCommunityAPIRequest $request): JsonResponse
@@ -157,6 +157,8 @@ class CommunityAPIController extends AppBaseController
             $input['categories'] = implode(',', $input['categories']);
 
             $input['invites'] = json_encode($input['invitation']);
+
+            $input['user_id'] = auth()->user()->id;
 
             $community = $this->communityRepository->create($input);
 
@@ -257,6 +259,104 @@ class CommunityAPIController extends AppBaseController
 
         $community->delete();
 
-        return $this->sendSuccess('Community deleted successfully');
+        return $this->sendResponse('Community deleted successfully');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/communities/{id}",
+     *     summary="Get current communities for a user",
+     *     description="Returns all communities for a specific user",
+     *     operationId="getCurrentCommunities",
+     *     tags={"Communities"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the user",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(
+     *                     property="logo",
+     *                     type="string",
+     *                     description="Logo URL of the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string",
+     *                     description="Name of the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="Description of the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="is_blockchain",
+     *                     type="boolean",
+     *                     description="Indicates if the community is blockchain-related"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="website",
+     *                     type="string",
+     *                     description="Website URL of the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="categories",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="string"
+     *                     ),
+     *                     description="Categories associated with the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="invites",
+     *                     type="integer",
+     *                     description="Number of invites available in the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="link",
+     *                     type="string",
+     *                     description="Link to the community"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="user_id",
+     *                     type="integer",
+     *                     description="ID of the user who owns the community"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
+     */
+    public function getCurrentCommunities($id)
+    {
+        $community = $this->communityRepository->findWhere(["user_id" => $id])->toArray();
+
+        $communityMembers = $this->memberRepository->findWhere(['user_id' => $id]);
+        
+        foreach ($communityMembers as $members) {
+            $communities[] = $this->communityRepository->find($members->community_id)->toArray();
+        }
+
+        $data = array_merge($community, $communities);
+
+        return $this->sendResponse('All Communities', $data);
     }
 }
