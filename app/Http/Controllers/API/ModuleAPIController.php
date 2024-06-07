@@ -22,55 +22,6 @@ class ModuleAPIController extends AppBaseController
         $this->moduleRepository = $moduleRepo;
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/modules",
-     *     summary="Display a listing of the Modules",
-     *     tags={"Modules"},
-     *     @OA\Parameter(
-     *         name="skip",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(type="integer"),
-     *         description="Number of records to skip"
-     *     ),
-     *     @OA\Parameter(
-     *         name="limit",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(type="integer"),
-     *         description="Maximum number of records to return"
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Modules retrieved successfully",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
-     *                 @OA\Property(
-     *                     property="title",
-     *                     type="string",
-     *                     description="Title of the module"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="desc",
-     *                     type="string",
-     *                     description="Description of the module"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="community_id",
-     *                     type="integer",
-     *                     description="ID of the related community"
-     *                 )
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad request"
-     *     )
-     * )
-     */
     public function index(Request $request): JsonResponse
     {
         $modules = $this->moduleRepository->with('quest')->all(
@@ -159,13 +110,48 @@ class ModuleAPIController extends AppBaseController
     }
 
     /**
-     * Display the specified Module.
-     * GET|HEAD /modules/{id}
+     * @OA\Get(
+     *     path="/api/modules/{id}",
+     *     operationId="getModuleById",
+     *     tags={"Modules"},
+     *     summary="Display the specified Module",
+     *     description="Get a module by its ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="The ID of the community"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="desc", type="string"),
+     *                 @OA\Property(property="community_id", type="integer")
+     *             ),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Module not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
      */
     public function show($id): JsonResponse
     {
         /** @var Module $module */
-        $module = $this->moduleRepository->find($id);
+        $module = $this->moduleRepository->with('quest')->findWhere(['community_id' => $id]);
 
         if (empty($module)) {
             return $this->sendError('Module not found');
