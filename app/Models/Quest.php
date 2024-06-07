@@ -19,7 +19,7 @@ class Quest extends Model
         'status',
         'user_id',
         'image',
-        'category',
+        'module_id',
     ];
 
     protected $casts = [
@@ -44,7 +44,7 @@ class Quest extends Model
         'sprint' => 'required',
         'status' => 'required',
         'user_id' => 'required',
-        'category' => 'required'
+        'module_id' => 'required'
     ];
 
     public function additionals()

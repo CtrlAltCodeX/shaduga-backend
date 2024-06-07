@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('quests', function (Blueprint $table) {
-            $table->string('category');
+            $table->integer('module_id');
         });
     }
 

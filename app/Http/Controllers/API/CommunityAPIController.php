@@ -350,6 +350,8 @@ class CommunityAPIController extends AppBaseController
         $community = $this->communityRepository->findWhere(["user_id" => $id])->toArray();
 
         $communityMembers = $this->memberRepository->findWhere(['user_id' => $id]);
+
+        $communities = [];
         
         foreach ($communityMembers as $members) {
             $communities[] = $this->communityRepository->find($members->community_id)->toArray();

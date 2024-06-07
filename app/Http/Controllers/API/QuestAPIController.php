@@ -84,7 +84,7 @@ class QuestAPIController extends AppBaseController
      *             @OA\Property(property="status", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example="1"),
      *             @OA\Property(property="image", type="object", example=""),
-     *             @OA\Property(property="category", type="string", example="category"),
+     *             @OA\Property(property="module_id", type="string", example="1"),
      *             @OA\Property(
      *                 property="additionals",
      *                 type="array",
@@ -134,7 +134,7 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="status", type="integer", example="1"),
      *                 @OA\Property(property="user_id", type="integer", example="1"),
      *                 @OA\Property(property="image", type="object", example=""),
-     *                 @OA\Property(property="category", type="string", example="category"),
+     *                 @OA\Property(property="module_id", type="string", example="1"),
      *                 @OA\Property(
      *                     property="additionals",
      *                     type="array",
@@ -262,7 +262,7 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="status", type="integer", example="1"),
      *                 @OA\Property(property="user_id", type="integer", example="1"),
      *                 @OA\Property(property="image", type="object", example="{}"),
-     *                 @OA\Property(property="category", type="string", example="{}"),
+     *                 @OA\Property(property="module_id", type="string", example="1"),
      *                 @OA\Property(
      *                     property="additionals",
      *                     type="array",

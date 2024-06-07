@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CommunityAPIController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserAPIController;
 /*
@@ -46,6 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
         ->except(['create', 'edit']);
 
     Route::resource('tasks', App\Http\Controllers\API\TaskAPIController::class)
+        ->except(['create', 'edit']);
+
+    Route::resource('modules', App\Http\Controllers\API\ModuleAPIController::class)
         ->except(['create', 'edit']);
 
     Route::post('logout', [UserAPIController::class, 'logout']);
