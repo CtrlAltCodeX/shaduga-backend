@@ -156,7 +156,9 @@ class CommunityAPIController extends AppBaseController
 
             $input['categories'] = implode(',', $input['categories']);
 
-            $input['invites'] = json_encode($input['invitation']);
+            if ($input['invitation']) {
+                $input['invites'] = json_encode($input['invitation']);
+            }
 
             $input['user_id'] = auth()->user()->id;
 
@@ -167,9 +169,11 @@ class CommunityAPIController extends AppBaseController
             $data = $community->toArray();
             $data['link'] = $input['link'];
 
-            foreach ($input['invitation'] as $invities) {
-                if (isset($invities[0])) {
-                    Mail::to($invities[0])->send(new InviteMail($input['link']));
+            if ($input['invitation']) {
+                foreach ($input['invitation'] as $invities) {
+                    if (isset($invities[0])) {
+                        Mail::to($invities[0])->send(new InviteMail($input['link']));
+                    }
                 }
             }
 
@@ -352,7 +356,7 @@ class CommunityAPIController extends AppBaseController
         $communityMembers = $this->memberRepository->findWhere(['user_id' => $id]);
 
         $communities = [];
-        
+
         foreach ($communityMembers as $members) {
             $communities[] = $this->communityRepository->find($members->community_id)->toArray();
         }

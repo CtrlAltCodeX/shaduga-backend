@@ -510,65 +510,6 @@
             }
         },
         "/api/modules": {
-            "get": {
-                "tags": [
-                    "Modules"
-                ],
-                "summary": "Display a listing of the Modules",
-                "operationId": "fd68f248deb9e9120dd06401066aec2a",
-                "parameters": [
-                    {
-                        "name": "skip",
-                        "in": "query",
-                        "description": "Number of records to skip",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "description": "Maximum number of records to return",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Modules retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "title": {
-                                                "description": "Title of the module",
-                                                "type": "string"
-                                            },
-                                            "desc": {
-                                                "description": "Description of the module",
-                                                "type": "string"
-                                            },
-                                            "community_id": {
-                                                "description": "ID of the related community",
-                                                "type": "integer"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    }
-                }
-            },
             "post": {
                 "tags": [
                     "Modules"
@@ -644,6 +585,79 @@
                     },
                     "400": {
                         "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/modules/{id}": {
+            "get": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Display the specified Module",
+                "description": "Get a module by its ID",
+                "operationId": "getModuleById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of the community",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "desc": {
+                                                    "type": "string"
+                                                },
+                                                "community_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

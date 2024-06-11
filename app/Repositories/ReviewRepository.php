@@ -14,7 +14,8 @@ class ReviewRepository extends EloquentBaseRepository
         'title',
         'body',
         'status',
-        "bookmarked"
+        "bookmarked",
+        "image"
     ];
 
     public function getFieldsSearchable(): array

@@ -30,4 +30,9 @@ class Module extends Model
     {
         return $this->hasMany(Quest::class);
     }
+
+    public function community()
+    {
+        return $this->hasOne(Community::class, 'id', 'community_id');
+    }
 }

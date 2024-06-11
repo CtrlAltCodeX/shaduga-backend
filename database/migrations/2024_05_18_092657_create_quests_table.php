@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('claim_time');
             $table->string('condition');
             $table->string('reward');
-            $table->string('module');
             $table->string('sprint');
             $table->tinyInteger('status');
             $table->timestamps();

@@ -14,7 +14,8 @@ class Review extends Model
         'title',
         'body',
         'status',
-        "bookmarked"
+        "bookmarked",
+        'image'
     ];
 
     protected $casts = [
@@ -30,6 +31,12 @@ class Review extends Model
         'title' => 'required',
         'body' => 'required',
         'status' => 'required',
-        "bookmarked" => "required"
+        "bookmarked" => "required",
+        'image' => "required"
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
