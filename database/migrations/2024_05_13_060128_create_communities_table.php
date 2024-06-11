@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('id');
             $table->string('name');
             $table->string('category_id');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

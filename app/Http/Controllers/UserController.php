@@ -26,7 +26,7 @@ class UserController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->paginate(10);
+        $users = $this->userRepository->simplePaginate(10);
 
         return view('admin.users.index')
             ->with('users', $users);
@@ -121,6 +121,12 @@ class UserController extends AppBaseController
 
                 $input['profile_url'] = "/storage/profile/" . "$profileImage";
             }
+        }
+
+        if ($input['password'] != "") {
+            $input['password'] = Hash::make($input['password']);
+        } else {
+            unset($input['password']);
         }
 
         $user = $this->userRepository->update($input, $id);

@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateModuleAPIRequest;
 use App\Http\Requests\API\UpdateModuleAPIRequest;
 use App\Repositories\CommunityRepository;
-use App\Repositories\ContactRepository;
 use App\Repositories\ModuleRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
 use Laracasts\Flash\Flash as FlashFlash;
 
 class ModulesController extends AppBaseController
@@ -22,7 +18,8 @@ class ModulesController extends AppBaseController
 
     public function __construct(
         ModuleRepository $moduleRepository,
-        public CommunityRepository $communityRepository
+        public CommunityRepository $communityRepository,
+        public UserRepository $userRepository,
     ) {
         $this->moduleRepository = $moduleRepository;
     }
@@ -45,7 +42,9 @@ class ModulesController extends AppBaseController
     {
         $communities = $this->communityRepository->all(['name', 'id']);
 
-        return view('admin.modules.create', compact('communities'));
+        $users = $this->userRepository->all(['name', 'id']);
+
+        return view('admin.modules.create', compact('communities', 'users'));
     }
 
     /**
@@ -93,7 +92,9 @@ class ModulesController extends AppBaseController
             return redirect(route('admin.modules.index'));
         }
 
-        return view('admin.modules.edit', compact('communities', 'modules'));
+        $users = $this->userRepository->all(['name', 'id']);
+
+        return view('admin.modules.edit', compact('communities', 'modules', 'users'));
     }
 
     /**

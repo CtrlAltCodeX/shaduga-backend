@@ -56,6 +56,11 @@ class ModuleAPIController extends AppBaseController
      *                 property="community_id",
      *                 type="integer",
      *                 description="community ID of the related community"
+     *             ),
+     *             @OA\Property(
+     *                 property="user_id",
+     *                 type="integer",
+     *                 description="user ID of the related community"
      *             )
      *         )
      *     ),
@@ -85,7 +90,12 @@ class ModuleAPIController extends AppBaseController
      *                     property="quest_id",
      *                     type="integer",
      *                     description="ID of the related quest"
-     *                 )
+     *                 ),
+     *                @OA\Property(
+     *                     property="user_id",
+     *                     type="integer",
+     *                     description="user ID of the related community"
+     *                  )
      *             ),
      *             @OA\Property(
      *                 property="message",

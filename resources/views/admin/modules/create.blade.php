@@ -16,11 +16,20 @@
                         <textarea class="form-control" id="desc" name="desc" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="community_id" class="form-label">Community ID</label>
+                        <label for="community_id" class="form-label">Community</label>
                         <select class="form-control" name="community_id" required>
                             <option value="">--Select--</option>
                             @foreach($communities as $community)
                             <option value="{{$community->id}}">{{$community->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="community_id" class="form-label">User</label>
+                        <select class="form-control" name="user_id" required>
+                            <option value="">--Select--</option>
+                            @foreach($users as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
                             @endforeach
                         </select>
                     </div>

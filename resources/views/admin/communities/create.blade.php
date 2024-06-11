@@ -29,9 +29,16 @@
                     <div class="mb-3">
                         <label for="categories" class="form-label">Categories</label>
                         <select class="form-control" id="categories" name="categories" required>
-                            <option value="category1">Category 1</option>
-                            <option value="category2">Category 2</option>
-                            <option value="category3">Category 3</option>
+                            <option value="category1">Productivity</option>
+                            <option value="category1">All</option>
+                            <option value="category1">Gaming</option>
+                            <option value="category1">Music</option>
+                            <option value="category1">Design and Creative</option>
+                            <option value="category1">Fashion and Brands</option>
+                            <option value="category1">Finance</option>
+                            <option value="category1">Health and Fitness</option>
+                            <option value="category1">Marketing and Growth</option>
+                            <option value="category1">Engineering and Development</option>
                         </select>
                     </div>
 

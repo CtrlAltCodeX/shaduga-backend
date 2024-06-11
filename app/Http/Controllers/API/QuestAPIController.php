@@ -229,17 +229,17 @@ class QuestAPIController extends AppBaseController
 
     /**
      * @OA\Get(
-     *     path="/api/quests/{category}",
+     *     path="/api/quests/{module_id}",
      *     summary="Display the specified Quest",
-     *     description="Retrieve a quest by its category.",
-     *     operationId="getQuestByCategory",
+     *     description="Retrieve a quest by its module_id.",
+     *     operationId="getQuestBymodule_id",
      *     tags={"Quests"},
      *     @OA\Parameter(
-     *         name="category",
+     *         name="module_id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         description="The category of the quest"
+     *         description="The module_id of the quest"
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -262,7 +262,7 @@ class QuestAPIController extends AppBaseController
      *                 @OA\Property(property="status", type="integer", example="1"),
      *                 @OA\Property(property="user_id", type="integer", example="1"),
      *                 @OA\Property(property="image", type="object", example="{}"),
-     *                 @OA\Property(property="module_id", type="string", example="1"),
+     *                 @OA\Property(property="module_id", type="integer", example="1"),
      *                 @OA\Property(
      *                     property="additionals",
      *                     type="array",
@@ -312,10 +312,10 @@ class QuestAPIController extends AppBaseController
      *     )
      * )
      */
-    public function show($category): JsonResponse
+    public function show($module_id): JsonResponse
     {
         /** @var Quest $quest */
-        $quest = $this->questRepository->with('additionals')->findByField('category', $category);
+        $quest = $this->questRepository->with('additionals')->findByField('module_id', $module_id);
 
         if (empty($quest)) {
             return $this->sendError('Quest not found');

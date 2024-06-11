@@ -24,6 +24,15 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="community_id" class="form-label">User</label>
+                        <select class="form-control" name="user_id" required>
+                            <option value="">--Select--</option>
+                            @foreach($users as $user)
+                            <option value="{{$user->id}}" {{ $user->id == $modules->user_id ? 'selected' : '' }}>{{$user->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="card-footer"> <button type="submit" class="btn btn-primary">Submit</button> </div> <!--end::Footer-->
             </form> <!--end::Form-->

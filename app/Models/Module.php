@@ -12,7 +12,8 @@ class Module extends Model
     public $fillable = [
         'title',
         'desc',
-        'community_id'
+        'community_id',
+        'user_id'
     ];
 
     protected $casts = [
@@ -23,7 +24,8 @@ class Module extends Model
     public static array $rules = [
         'title' => 'required',
         'desc' => 'required',
-        'community_id' => 'required'
+        'community_id' => 'required',
+        'user_id' => 'required',
     ];
 
     public function quest()

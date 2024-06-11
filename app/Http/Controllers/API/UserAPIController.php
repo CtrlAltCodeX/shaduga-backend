@@ -448,12 +448,16 @@ class UserAPIController extends AppBaseController
     {
         try {
             request()->validate([
-                'email' => 'required|email|unique:users,email'
+                'email' => 'required|email'
             ]);
 
             $otp = $this->generateOTP(4);
 
-            $this->userRepository->create(['email' => request()->email, 'otp' => $otp]);
+            if ($user = $this->userRepository->findByField(['emal' => request()->email])) {
+                $user->update(['otp' => $otp], $user->id);
+            } else {
+                $this->userRepository->create(['email' => request()->email, 'otp' => $otp]);
+            }
 
             Mail::to(request()->email)->send(new OtpMail($otp));
 

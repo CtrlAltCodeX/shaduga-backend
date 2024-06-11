@@ -17,6 +17,7 @@ class User extends Authenticatable
         'password',
         'otp',
         'status',
+        'role',
     ];
 
     protected $casts = [
@@ -28,6 +29,5 @@ class User extends Authenticatable
     public static array $rules = [
         'name' => 'required',
         'email' => 'email|required',
-        'password' => 'required'
     ];
 }

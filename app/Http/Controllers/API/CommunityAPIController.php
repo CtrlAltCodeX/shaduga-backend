@@ -156,7 +156,7 @@ class CommunityAPIController extends AppBaseController
 
             $input['categories'] = implode(',', $input['categories']);
 
-            if ($input['invitation']) {
+            if (isset($input['invitation'])) {
                 $input['invites'] = json_encode($input['invitation']);
             }
 
@@ -169,7 +169,7 @@ class CommunityAPIController extends AppBaseController
             $data = $community->toArray();
             $data['link'] = $input['link'];
 
-            if ($input['invitation']) {
+            if (isset($input['invitation'])) {
                 foreach ($input['invitation'] as $invities) {
                     if (isset($invities[0])) {
                         Mail::to($invities[0])->send(new InviteMail($input['link']));

@@ -12,6 +12,7 @@ class ModuleRepository extends EloquentBaseRepository
         'title',
         'desc',
         'community_id',
+        'user_id',
     ];
 
     public function getFieldsSearchable(): array

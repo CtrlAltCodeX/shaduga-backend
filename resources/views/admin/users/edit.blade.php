@@ -14,12 +14,18 @@
                         <input type="email" class="form-control" id="exampleInputPassword1" value="{{ $user->email }}" name="email">
                     </div>
                     <div class="mb-3"> <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" value="{{ $user->password }}" name="password">
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="password">
                     </div>
                     <div class="mb-3"> <label for="exampleInputPassword1" class="form-label">Status</label>
                         <select class="form-control" name="status">
                             <option value="1">Active</option>
                             <option value="0">InActive</option>
+                        </select>
+                    </div>
+                    <div class="mb-3"> <label for="exampleInputPassword1" class="form-label">Role</label>
+                        <select class="form-control" name="role">
+                            <option value="1">Admin</option>
+                            <option value="0">Normal User</option>
                         </select>
                     </div>
                 </div> <!--end::Body--> <!--begin::Footer-->

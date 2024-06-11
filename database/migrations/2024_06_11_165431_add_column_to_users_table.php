@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->tinyInteger("bookmarked");
-            $table->string("image");
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('role')->default(0);
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

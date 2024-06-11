@@ -11,7 +11,8 @@ class UserRepository extends EloquentBaseRepository
     protected $fieldSearchable = [
         'name',
         'email',
-        'password'
+        'password',
+        'role',
     ];
 
     public function getFieldsSearchable(): array

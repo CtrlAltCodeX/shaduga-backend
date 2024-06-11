@@ -22,6 +22,12 @@
                             <option value="0">InActive</option>
                         </select>
                     </div>
+                    <div class="mb-3"> <label for="exampleInputPassword1" class="form-label">Role</label>
+                        <select class="form-control" name="role">
+                            <option value="1">Admin</option>
+                            <option value="0">Normal User</option>
+                        </select>
+                    </div>
 
                 </div> <!--end::Body--> <!--begin::Footer-->
                 <div class="card-footer"> <button type="submit" class="btn btn-primary">Submit</button> </div> <!--end::Footer-->

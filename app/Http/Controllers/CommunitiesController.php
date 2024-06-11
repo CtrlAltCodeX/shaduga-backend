@@ -49,7 +49,7 @@ class CommunitiesController extends AppBaseController
     {
         $input = $request->all();
 
-        if ($input['invitation']) {
+        if (isset($input['invitation'])) {
             $input['invites'] = json_encode($input['invitation']);
         }
 
@@ -67,7 +67,7 @@ class CommunitiesController extends AppBaseController
 
         $this->communityRepository->create($input);
 
-        if ($input['invitation']) {
+        if (isset($input['invitation'])) {
             foreach ($input['invitation'] as $invities) {
                 if (isset($invities[0])) {
                     // Mail::to($invities[0])->send(new InviteMail($input['link']));
