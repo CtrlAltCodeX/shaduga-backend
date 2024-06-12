@@ -57,7 +57,7 @@ class QuestAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse($quests->toArray(), 'Quests retrieved successfully');
+        return $this->sendResponse('Quests retrieved successfully', $quests->toArray());
     }
 
     /**
@@ -223,7 +223,7 @@ class QuestAPIController extends AppBaseController
         $data = $quest->toArray();
         $data['additional'] = $questAdditional;
 
-        return $this->sendResponse($data, 'Quest saved successfully');
+        return $this->sendResponse('Quest saved successfully', $data);
     }
 
 
@@ -321,7 +321,7 @@ class QuestAPIController extends AppBaseController
             return $this->sendError('Quest not found');
         }
 
-        return $this->sendResponse($quest->toArray(), 'Quest retrieved successfully');
+        return $this->sendResponse('Quest retrieved successfully', $quest->toArray(),);
     }
 
     /**
@@ -341,7 +341,7 @@ class QuestAPIController extends AppBaseController
 
         $quest = $this->questRepository->update($input, $id);
 
-        return $this->sendResponse($quest->toArray(), 'Quest updated successfully');
+        return $this->sendResponse('Quest updated successfully', $quest->toArray());
     }
 
     /**

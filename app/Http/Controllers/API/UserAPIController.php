@@ -14,7 +14,6 @@ use App\Repositories\MemberRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Class UserAPIController
@@ -42,7 +41,7 @@ class UserAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
+        return $this->sendResponse('Users retrieved successfully', $users->toArray());
     }
 
     /**
@@ -55,7 +54,7 @@ class UserAPIController extends AppBaseController
 
         $user = $this->userRepository->create($input);
 
-        return $this->sendResponse($user->toArray(), 'User saved successfully');
+        return $this->sendResponse('User saved successfully', $user->toArray());
     }
 
     /**
@@ -115,7 +114,7 @@ class UserAPIController extends AppBaseController
             return $this->sendError('User not found');
         }
 
-        return $this->sendResponse($user->toArray(), 'User retrieved successfully');
+        return $this->sendResponse('User retrieved successfully', $user->toArray());
     }
 
     /**
@@ -184,7 +183,7 @@ class UserAPIController extends AppBaseController
 
         $user = $this->userRepository->update($input, $id);
 
-        return $this->sendResponse($user->toArray(), 'User updated successfully');
+        return $this->sendResponse('User updated successfully', $user->toArray());
     }
 
     /**
@@ -453,8 +452,8 @@ class UserAPIController extends AppBaseController
 
             $otp = $this->generateOTP(4);
 
-            if ($user = $this->userRepository->findByField(['emal' => request()->email])) {
-                $user->update(['otp' => $otp], $user->id);
+            if ($user = $this->userRepository->findByField(['email' => request()->email])) {
+                $user->update(['otp' => $otp]);
             } else {
                 $this->userRepository->create(['email' => request()->email, 'otp' => $otp]);
             }

@@ -101,7 +101,7 @@ class ReviewAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse($reviews->toArray(), 'Reviews retrieved successfully');
+        return $this->sendResponse('Reviews retrieved successfully', $reviews->toArray());
     }
 
     /**
@@ -198,7 +198,7 @@ class ReviewAPIController extends AppBaseController
 
         $review = $this->reviewRepository->create($input);
 
-        return $this->sendResponse($review->toArray(), 'Review saved successfully');
+        return $this->sendResponse('Review saved successfully', $review->toArray());
     }
 
     /**
@@ -214,7 +214,7 @@ class ReviewAPIController extends AppBaseController
             return $this->sendError('Review not found');
         }
 
-        return $this->sendResponse($review->toArray(), 'Review retrieved successfully');
+        return $this->sendResponse('Review retrieved successfully', $review->toArray());
     }
 
     /**
@@ -234,7 +234,7 @@ class ReviewAPIController extends AppBaseController
 
         $review = $this->reviewRepository->update($input, $id);
 
-        return $this->sendResponse($review->toArray(), 'Review updated successfully');
+        return $this->sendResponse('Review updated successfully', $review->toArray());
     }
 
     /**
@@ -254,6 +254,6 @@ class ReviewAPIController extends AppBaseController
 
         $review->delete();
 
-        return $this->sendSuccess('Review deleted successfully');
+        return $this->sendResponse('Review deleted successfully');
     }
 }

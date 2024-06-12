@@ -30,7 +30,7 @@ class ModuleAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse($modules->toArray(), 'Modules retrieved successfully');
+        return $this->sendResponse('Modules retrieved successfully', $modules->toArray());
     }
 
     /**
@@ -116,7 +116,7 @@ class ModuleAPIController extends AppBaseController
 
         $module = $this->moduleRepository->create($input);
 
-        return $this->sendResponse($module->toArray(), 'Module saved successfully');
+        return $this->sendResponse('Module saved successfully', $module->toArray());
     }
 
     /**
@@ -167,7 +167,7 @@ class ModuleAPIController extends AppBaseController
             return $this->sendError('Module not found');
         }
 
-        return $this->sendResponse($module->toArray(), 'Module retrieved successfully');
+        return $this->sendResponse('Module retrieved successfully', $module->toArray());
     }
 
     /**
@@ -187,7 +187,7 @@ class ModuleAPIController extends AppBaseController
 
         $module = $this->moduleRepository->update($input, $id);
 
-        return $this->sendResponse($module->toArray(), 'Module updated successfully');
+        return $this->sendResponse('Module updated successfully', $module->toArray());
     }
 
     /**
@@ -207,6 +207,6 @@ class ModuleAPIController extends AppBaseController
 
         $module->delete();
 
-        return $this->sendSuccess('Module deleted successfully');
+        return $this->sendResponse('Module deleted successfully');
     }
 }

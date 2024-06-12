@@ -233,7 +233,7 @@ class MemberAPIController extends AppBaseController
 
         $member = $this->memberRepository->create($input);
 
-        return $this->sendResponse($member->toArray(), 'Member saved successfully');
+        return $this->sendResponse('Member saved successfully', $member->toArray());
     }
 
 
@@ -250,7 +250,7 @@ class MemberAPIController extends AppBaseController
             return $this->sendError('Member not found');
         }
 
-        return $this->sendResponse($member->toArray(), 'Member retrieved successfully');
+        return $this->sendResponse('Member retrieved successfully', $member->toArray());
     }
 
     /**
@@ -270,7 +270,7 @@ class MemberAPIController extends AppBaseController
 
         $member = $this->memberRepository->update($input, $id);
 
-        return $this->sendResponse($member->toArray(), 'Member updated successfully');
+        return $this->sendResponse('Member updated successfully', $member->toArray());
     }
 
     /**
