@@ -452,7 +452,7 @@ class UserAPIController extends AppBaseController
 
             $otp = $this->generateOTP(4);
 
-            if ($user = $this->userRepository->findByField(['email' => request()->email])) {
+            if ($user = $this->userRepository->findByField(['email' => request()->email])->first()) {
                 $user->update(['otp' => $otp]);
             } else {
                 $this->userRepository->create(['email' => request()->email, 'otp' => $otp]);
