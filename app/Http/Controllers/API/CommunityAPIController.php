@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Mail\InviteMail;
 use App\Repositories\MemberRepository;
+use App\Repositories\ModuleRepository;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -22,7 +23,8 @@ class CommunityAPIController extends AppBaseController
 
     public function __construct(
         CommunityRepository $communityRepo,
-        public MemberRepository $memberRepository
+        public MemberRepository $memberRepository,
+        public ModuleRepository $moduleRepository
     ) {
         $this->communityRepository = $communityRepo;
     }
@@ -113,7 +115,7 @@ class CommunityAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse($communities->toArray(), 'Communities retrieved successfully');
+        return $this->sendResponse('Communities retrieved successfully', $communities->toArray());
     }
 
     /**
@@ -164,7 +166,7 @@ class CommunityAPIController extends AppBaseController
 
             $community = $this->communityRepository->create($input);
 
-            $input['link'] = url('/') . "/$community->name" . $community->id;
+            $input['link'] = url('/') . "/cw/$community->name" . $community->id;
 
             $data = $community->toArray();
             $data['link'] = $input['link'];
@@ -177,7 +179,18 @@ class CommunityAPIController extends AppBaseController
                 }
             }
 
-            return $this->sendResponse($data, 'Community saved successfully');
+            $defaultModules = ['Rewards Section', 'Social Support', 'Onboarding Module', 'Tutorial'];
+
+            foreach ($defaultModules as $module) {
+                $this->moduleRepository->create([
+                    'name' => $module,
+                    'desc' => 'This is the Default Modules',
+                    'community_id' => $community->id,
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
+
+            return $this->sendResponse('Community saved successfully', $data);
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
         }
@@ -222,7 +235,7 @@ class CommunityAPIController extends AppBaseController
             return $this->sendError('Community not found');
         }
 
-        return $this->sendResponse($community->toArray(), 'Community retrieved successfully');
+        return $this->sendResponse('Community retrieved successfully', $community->toArray());
     }
 
     /**
@@ -243,7 +256,7 @@ class CommunityAPIController extends AppBaseController
 
         $community = $this->communityRepository->update($input, $id);
 
-        return $this->sendResponse($community->toArray(), 'Community updated successfully');
+        return $this->sendResponse('Community updated successfully', $community->toArray());
     }
 
     /**

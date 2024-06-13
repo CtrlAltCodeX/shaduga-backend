@@ -16,7 +16,6 @@ class Quest extends Model
         'claim_time',
         'condition',
         'reward',
-        'module',
         'sprint',
         'status',
         'user_id',
@@ -32,7 +31,6 @@ class Quest extends Model
         'claim_time' => 'string',
         'condition' => 'string',
         'reward' => 'string',
-        'module' => 'string',
         'sprint' => 'string',
         'status' => 'string',
         'user_id' => 'integer'
@@ -46,7 +44,6 @@ class Quest extends Model
         'claim_time' => 'required',
         'condition' => 'required',
         'reward' => 'required',
-        'module' => 'required',
         'sprint' => 'required',
         'status' => 'required',
         'user_id' => 'required',
