@@ -70,5 +70,47 @@
             </div> <!--end::Row--> <!--begin::Row-->
         </div> <!--end::Container-->
     </div> <!--end::App Content-->
+    <canvas id="userChart" width="100" height="50"></canvas>
 </main> <!--end::App Main--> <!--begin::Footer-->
 @endsection
+
+@push('js')
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '{{ route("admin.all.users") }}',
+            method: 'GET',
+            success: function(data) {
+                var labels = data.data.map(function(user) {
+                    return user.name; // Adjust as necessary
+                });
+                var dataPoints = data.data.map(function(user) {
+                    return new Date(user.created_at).toLocaleDateString(); // Adjust as necessary
+                });
+
+                var ctx = document.getElementById('userChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar', // or 'line', 'pie', etc.
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'User Creation Dates',
+                            data: dataPoints,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@endpush

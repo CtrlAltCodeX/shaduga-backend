@@ -33,6 +33,16 @@ class UserController extends AppBaseController
     }
 
     /**
+     * Display a listing of the User.
+     */
+    public function all(Request $request)
+    {
+        $users = $this->userRepository->simplePaginate(10);
+
+        return $users;
+    }
+
+    /**
      * Show the form for creating a new User.
      */
     public function create()

@@ -18,13 +18,19 @@ return new class extends Migration
             $table->string('title');
             $table->string('desc');
             $table->unsignedBigInteger('community_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             // Define the foreign key constraint
             $table->foreign('community_id')
-                  ->references('id')
-                  ->on('communities')
-                  ->onDelete('cascade'); // Optional: Define the action on delete
+                ->references('id')
+                ->on('communities')
+                ->onDelete('cascade'); // Optional: Define the action on delete
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade'); // Optional: Define the action on delete
         });
     }
 
