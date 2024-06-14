@@ -9,6 +9,7 @@ use App\Repositories\ModuleRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Repositories\QuestRepository;
 
 /**
  * Class ModuleAPIController
@@ -17,8 +18,10 @@ class ModuleAPIController extends AppBaseController
 {
     private ModuleRepository $moduleRepository;
 
-    public function __construct(ModuleRepository $moduleRepo)
-    {
+    public function __construct(
+        ModuleRepository $moduleRepo,
+        public QuestRepository $questRepository
+    ) {
         $this->moduleRepository = $moduleRepo;
     }
 
@@ -191,10 +194,46 @@ class ModuleAPIController extends AppBaseController
     }
 
     /**
-     * Remove the specified Module from storage.
-     * DELETE /modules/{id}
-     *
-     * @throws \Exception
+     * @OA\Delete(
+     *     path="/api/modules/{id}",
+     *     summary="Remove the specified Module from storage",
+     *     description="Deletes a module based on the provided ID",
+     *     operationId="destroyModule",
+     *     tags={"Modules"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the module to delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Module deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Module deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Module not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Module not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="An error occurred while deleting the module")
+     *         )
+     *     )
+     * )
      */
     public function destroy($id): JsonResponse
     {
@@ -206,6 +245,13 @@ class ModuleAPIController extends AppBaseController
         }
 
         $module->delete();
+
+        $quests = $this->questRepository->findByField(['module_id' => $id]);
+
+        foreach ($quests as $quest) {
+            $quest->delete();
+        }
+
 
         return $this->sendResponse('Module deleted successfully');
     }

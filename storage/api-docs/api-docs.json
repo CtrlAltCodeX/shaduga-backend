@@ -538,6 +538,10 @@
                                     "community_id": {
                                         "description": "community ID of the related community",
                                         "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "description": "user ID of the related community",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -568,6 +572,10 @@
                                                 },
                                                 "quest_id": {
                                                     "description": "ID of the related quest",
+                                                    "type": "integer"
+                                                },
+                                                "user_id": {
+                                                    "description": "user ID of the related community",
                                                     "type": "integer"
                                                 }
                                             },
@@ -652,6 +660,87 @@
                                         },
                                         "message": {
                                             "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Remove the specified Module from storage",
+                "description": "Deletes a module based on the provided ID",
+                "operationId": "destroyModule",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the module to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Module deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while deleting the module"
                                         }
                                     },
                                     "type": "object"
@@ -1033,19 +1122,19 @@
                 }
             }
         },
-        "/api/quests/{category}": {
+        "/api/quests/{module_id}": {
             "get": {
                 "tags": [
                     "Quests"
                 ],
                 "summary": "Display the specified Quest",
-                "description": "Retrieve a quest by its category.",
-                "operationId": "getQuestByCategory",
+                "description": "Retrieve a quest by its module_id.",
+                "operationId": "getQuestBymodule_id",
                 "parameters": [
                     {
-                        "name": "category",
+                        "name": "module_id",
                         "in": "path",
-                        "description": "The category of the quest",
+                        "description": "The module_id of the quest",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1123,7 +1212,7 @@
                                                     "example": "{}"
                                                 },
                                                 "module_id": {
-                                                    "type": "string",
+                                                    "type": "integer",
                                                     "example": "1"
                                                 },
                                                 "additionals": {

@@ -109,7 +109,7 @@ class CommunityAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $communities = $this->communityRepository->all(
+        $communities = $this->communityRepository->with('join')->all(
             ['*'],
             $request->get('skip'),
             $request->get('limit')
@@ -166,7 +166,11 @@ class CommunityAPIController extends AppBaseController
 
             $community = $this->communityRepository->create($input);
 
-            $input['link'] = url('/') . "/cw/$community->name" . $community->id;
+            $input['link'] = url('/') . "/cw/$community->name/" . $community->id;
+
+            $communityUpdate = $this->communityRepository->find($community->id);
+
+            $communityUpdate->update(['link' => $input['link']]);
 
             $data = $community->toArray();
             $data['link'] = $input['link'];

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('communities', function (Blueprint $table) {
             $table->json('invites')->nullable();
-            $table->string("link")->nullable();
+            $table->string("link");
         });
     }
 
