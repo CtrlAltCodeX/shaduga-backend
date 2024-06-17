@@ -81,12 +81,20 @@
             url: '{{ route("admin.all.users") }}',
             method: 'GET',
             success: function(data) {
-                var labels = data.data.map(function(user) {
-                    return user.name; // Adjust as necessary
+                // Extract dates and count occurrences
+                var dateCounts = {};
+                data.data.forEach(function(user) {
+                    var date = new Date(user.created_at).toLocaleDateString();
+                    if (dateCounts[date]) {
+                        dateCounts[date]++;
+                    } else {
+                        dateCounts[date] = 1;
+                    }
                 });
-                var dataPoints = data.data.map(function(user) {
-                    return new Date(user.created_at).toLocaleDateString(); // Adjust as necessary
-                });
+
+                // Prepare labels and data points
+                var labels = Object.keys(dateCounts);
+                var dataPoints = Object.values(dateCounts);
 
                 var ctx = document.getElementById('userChart').getContext('2d');
                 var chart = new Chart(ctx, {
@@ -94,7 +102,7 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'User Creation Dates',
+                            label: 'Number of Users Created',
                             data: dataPoints,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',

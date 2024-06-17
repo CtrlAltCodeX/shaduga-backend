@@ -109,7 +109,7 @@ class CommunityAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $communities = $this->communityRepository->all(
+        $communities = $this->communityRepository->with('members')->all(
             ['*'],
             $request->get('skip'),
             $request->get('limit')
@@ -229,13 +229,20 @@ class CommunityAPIController extends AppBaseController
     public function show($id): JsonResponse
     {
         /** @var Community $community */
-        $community = $this->communityRepository->find($id);
+        $community = $this->communityRepository->find($id)->toArray();
+
+        $memberExist = $this->memberRepository->findByField([
+            'community_id' => $community['id'],
+            'user_id' => auth()->user()->id
+        ])->count();
+
+        $community['joined'] = $memberExist ? true : false;
 
         if (empty($community)) {
             return $this->sendError('Community not found');
         }
 
-        return $this->sendResponse('Community retrieved successfully', $community->toArray());
+        return $this->sendResponse('Community retrieved successfully', $community);
     }
 
     /**

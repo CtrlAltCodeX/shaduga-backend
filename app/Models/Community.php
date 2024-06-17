@@ -38,7 +38,7 @@ class Community extends Model
         // 'status' => 'required'
     ];
 
-    public function join()
+    public function members()
     {
         return $this->hasMany(Member::class);
     }
