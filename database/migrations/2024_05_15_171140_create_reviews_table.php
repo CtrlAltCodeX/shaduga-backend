@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('community_id');
-            $table->integer('rating');
-            $table->string('title');
+            $table->tinyInteger('star_rating');
             $table->string('body');
             $table->tinyInteger('status');
+            $table->tinyInteger('bookmarked');
             $table->timestamps();
 
             $table->foreign('community_id')

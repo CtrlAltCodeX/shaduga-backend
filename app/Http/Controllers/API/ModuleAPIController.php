@@ -174,8 +174,89 @@ class ModuleAPIController extends AppBaseController
     }
 
     /**
-     * Update the specified Module in storage.
-     * PUT/PATCH /modules/{id}
+     * @OA\Put(
+     *     path="/api/modules/{id}",
+     *     summary="Update the specified Module in storage",
+     *     operationId="updateModule",
+     *     tags={"Modules"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of module to update",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/UpdateModuleAPIRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Module updated successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=true
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Schema(ref="#/components/schemas/Module")
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Module updated successfully"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Module not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Module not found"
+     *             )
+     *         )
+     *     )
+     * )
+     * @OA\Schema(
+     *     schema="UpdateModuleAPIRequest",
+     *     type="object",
+     *     required={"name", "description"},
+     *     @OA\Property(
+     *         property="name",
+     *         type="string",
+     *         description="Name of the module"
+     *     ),
+     *     @OA\Property(
+     *         property="description",
+     *         type="string",
+     *         description="Description of the module"
+     *     ),
+     *     @OA\Property(
+     *         property="community_id",
+     *         type="integer",
+     *         description="Commnity Id"
+     *     ),
+     *     @OA\Property(
+     *         property="user_id",
+     *         type="integer",
+     *         description="User Id"
+     *     )
+     * )
      */
     public function update($id, UpdateModuleAPIRequest $request): JsonResponse
     {

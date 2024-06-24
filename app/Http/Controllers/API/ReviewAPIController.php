@@ -25,71 +25,6 @@ class ReviewAPIController extends AppBaseController
     /**
      * Display a listing of the Reviews.
      *
-     * @OA\Get(
-     *     path="/reviews",
-     *     summary="Display a listing of the Reviews",
-     *     tags={"Reviews"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Review")
-     *     )
-     * )
-     *  * @OA\Schema(
-     *     schema="Review",
-     *     @OA\Property(
-     *         property="id",
-     *         type="integer",
-     *         format="int64",
-     *         description="Unique identifier for the review"
-     *     ),
-     *     @OA\Property(
-     *         property="user_id",
-     *         type="integer",
-     *         format="int64",
-     *         description="Unique identifier for the User"
-     *     ),
-     *     @OA\Property(
-     *         property="rating",
-     *         type="integer",
-     *         format="int64",
-     *         description="Rating"
-     *     ),
-     *     @OA\Property(
-     *         property="title",
-     *         type="integer",
-     *         format="int64",
-     *         description="Title"
-     *     ),
-     *     @OA\Property(
-     *         property="body",
-     *         type="string",
-     *         description="Content of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="status",
-     *         type="integer",
-     *         description="Status of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="bookmarked",
-     *         type="integer",
-     *         description="Bookmarked of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="created_at",
-     *         type="string",
-     *         format="date-time",
-     *         description="Creation date of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="updated_at",
-     *         type="string",
-     *         format="date-time",
-     *         description="Last update date of the review"
-     *     )
-     * )
-     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -105,92 +40,57 @@ class ReviewAPIController extends AppBaseController
     }
 
     /**
-     * Store a newly created Review in storage.
-     *
      * @OA\Post(
      *     path="/reviews",
-     *     summary="Store a newly created Review in storage",
+     *     summary="Store a new review",
+     *     description="Create and store a new review in the system.",
      *     tags={"Reviews"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/CreateReviewAPIRequest")
+     *         @OA\JsonContent(
+     *             required={"user_id", "community_id", "star_rating", "body", "status", "bookmarked"},
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="community_id", type="integer", example=1),
+     *             @OA\Property(property="star_rating", type="integer", example=5),
+     *             @OA\Property(property="body", type="string", example="This is a review body."),
+     *             @OA\Property(property="status", type="string", example="approved"),
+     *             @OA\Property(property="bookmarked", type="boolean", example=true)
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Review")
+     *         description="Review saved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Review saved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="user_id", type="integer", example=1),
+     *                 @OA\Property(property="community_id", type="integer", example=1),
+     *                 @OA\Property(property="star_rating", type="integer", example=5),
+     *                 @OA\Property(property="body", type="string", example="This is a review body."),
+     *                 @OA\Property(property="status", type="string", example="approved"),
+     *                 @OA\Property(property="bookmarked", type="boolean", example=true)
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
-     *         response=422,
-     *         description="Unprocessable Entity",
+     *         response=400,
+     *         description="Bad request",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
-     *             @OA\Property(property="errors", type="object", example={"field": {"The field is required."}})
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid input")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="An error occurred")
      *         )
      *     )
      * )
-     * 
-     * @OA\Schema(
-     *     schema="CreateReviewAPIRequest",
-     *     title="Create Review API Request",
-     *     description="Request body parameters for creating a review.",
-     *     required={"product_id", "rating", "comment"},
-     *     @OA\Property(
-     *         property="id",
-     *         type="integer",
-     *         format="int64",
-     *         description="Unique identifier for the review"
-     *     ),
-     *     @OA\Property(
-     *         property="user_id",
-     *         type="integer",
-     *         format="int64",
-     *         description="Unique identifier for the User"
-     *     ),
-     *     @OA\Property(
-     *         property="rating",
-     *         type="integer",
-     *         format="int64",
-     *         description="Rating"
-     *     ),
-     *     @OA\Property(
-     *         property="title",
-     *         type="integer",
-     *         format="int64",
-     *         description="Title"
-     *     ),
-     *     @OA\Property(
-     *         property="body",
-     *         type="string",
-     *         description="Content of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="status",
-     *         type="integer",
-     *         description="Status of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="bookmarked",
-     *         type="integer",
-     *         description="Bookmarked of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="created_at",
-     *         type="string",
-     *         format="date-time",
-     *         description="Creation date of the review"
-     *     ),
-     *     @OA\Property(
-     *         property="updated_at",
-     *         type="string",
-     *         format="date-time",
-     *         description="Last update date of the review"
-     *     )
-     * )
-     * 
-     *
-     * @param CreateReviewAPIRequest $request
-     * @return JsonResponse
      */
     public function store(CreateReviewAPIRequest $request): JsonResponse
     {
@@ -255,5 +155,73 @@ class ReviewAPIController extends AppBaseController
         $review->delete();
 
         return $this->sendResponse('Review deleted successfully');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/reviews/{userId}/{communityId}",
+     *     summary="Get a review by user and community",
+     *     description="Retrieve a review based on user ID and community ID",
+     *     operationId="getReviewByUserCommunity",
+     *     tags={"Reviews"},
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         description="ID of the user",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="communityId",
+     *         in="path",
+     *         description="ID of the community",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Review retrieved successfully"
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="user_id",
+     *                     type="integer",
+     *                     example=1
+     *                 ),
+     *                 @OA\Property(
+     *                     property="community_id",
+     *                     type="integer",
+     *                     example=1
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Review not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
+     */
+    public function getReviewByUserCommunity($userId, $communityId)
+    {
+        $review = $this->reviewRepository->findByField(['user_id' => $userId, 'community_id' => $communityId]);
+
+        return $this->sendResponse('Review retrieved successfully', $review);
     }
 }
