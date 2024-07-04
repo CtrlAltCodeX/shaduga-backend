@@ -538,6 +538,10 @@
                                     "community_id": {
                                         "description": "community ID of the related community",
                                         "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "description": "user ID of the related community",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -568,6 +572,10 @@
                                                 },
                                                 "quest_id": {
                                                     "description": "ID of the related quest",
+                                                    "type": "integer"
+                                                },
+                                                "user_id": {
+                                                    "description": "user ID of the related community",
                                                     "type": "integer"
                                                 }
                                             },
@@ -652,6 +660,142 @@
                                         },
                                         "message": {
                                             "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Update the specified Module in storage",
+                "operationId": "updateModule",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of module to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateModuleAPIRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Module updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api   /modules/{id}": {
+            "delete": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Delete an existing module",
+                "description": "Deletes the specified module by ID",
+                "operationId": "deleteModule",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the module to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Module deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module not found"
                                         }
                                     },
                                     "type": "object"
@@ -1033,19 +1177,19 @@
                 }
             }
         },
-        "/api/quests/{category}": {
+        "/api/quests/{module_id}": {
             "get": {
                 "tags": [
                     "Quests"
                 ],
                 "summary": "Display the specified Quest",
-                "description": "Retrieve a quest by its category.",
-                "operationId": "getQuestByCategory",
+                "description": "Retrieve a quest by its module_id.",
+                "operationId": "getQuestBymodule_id",
                 "parameters": [
                     {
-                        "name": "category",
+                        "name": "module_id",
                         "in": "path",
-                        "description": "The category of the quest",
+                        "description": "The module_id of the quest",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1123,7 +1267,7 @@
                                                     "example": "{}"
                                                 },
                                                 "module_id": {
-                                                    "type": "string",
+                                                    "type": "integer",
                                                     "example": "1"
                                                 },
                                                 "additionals": {
@@ -1234,6 +1378,346 @@
             }
         },
         "/api/quests/{id}": {
+            "put": {
+                "tags": [
+                    "Quests"
+                ],
+                "summary": "Update an existing quest",
+                "description": "Updates the specified quest by ID",
+                "operationId": "updateQuest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quest to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Quest name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Quest description"
+                                    },
+                                    "difficulty": {
+                                        "type": "string",
+                                        "example": "easy"
+                                    },
+                                    "recurrence": {
+                                        "type": "string",
+                                        "example": "daily"
+                                    },
+                                    "cooldown": {
+                                        "type": "integer",
+                                        "example": 24
+                                    },
+                                    "claim_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-05-18T00:00:00Z"
+                                    },
+                                    "condition": {
+                                        "type": "string",
+                                        "example": "Complete 3 tasks"
+                                    },
+                                    "reward": {
+                                        "type": "string",
+                                        "example": "100 points"
+                                    },
+                                    "module": {
+                                        "type": "string",
+                                        "example": "Module A"
+                                    },
+                                    "sprint": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "module_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "additionals": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "link": {
+                                                    "type": "string",
+                                                    "example": "link"
+                                                },
+                                                "task_type": {
+                                                    "type": "string",
+                                                    "example": "link"
+                                                },
+                                                "number_invitation": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "endpoint": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "methods": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "api_key": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "partnership": {
+                                                    "type": "string",
+                                                    "example": "for partnership link"
+                                                },
+                                                "request_type": {
+                                                    "type": "string",
+                                                    "example": "text, url, number"
+                                                },
+                                                "correct_answer": {
+                                                    "type": "string",
+                                                    "example": "for answer"
+                                                },
+                                                "stars": {
+                                                    "type": "string",
+                                                    "example": "2"
+                                                },
+                                                "steps": {
+                                                    "type": "string",
+                                                    "example": "0 to 10"
+                                                },
+                                                "labels": {
+                                                    "type": "string",
+                                                    "example": "0 to 10"
+                                                },
+                                                "files": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "format": "binary"
+                                                    },
+                                                    "example": [
+                                                        "object",
+                                                        "object",
+                                                        "object"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quest updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Quest name"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Quest description"
+                                                },
+                                                "difficulty": {
+                                                    "type": "string",
+                                                    "example": "easy"
+                                                },
+                                                "recurrence": {
+                                                    "type": "string",
+                                                    "example": "daily"
+                                                },
+                                                "cooldown": {
+                                                    "type": "integer",
+                                                    "example": 24
+                                                },
+                                                "claim_time": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-05-18T00:00:00Z"
+                                                },
+                                                "condition": {
+                                                    "type": "string",
+                                                    "example": "Complete 3 tasks"
+                                                },
+                                                "reward": {
+                                                    "type": "string",
+                                                    "example": "100 points"
+                                                },
+                                                "module": {
+                                                    "type": "string",
+                                                    "example": "Module A"
+                                                },
+                                                "sprint": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "status": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "format": "binary"
+                                                },
+                                                "module_id": {
+                                                    "type": "string",
+                                                    "example": "1"
+                                                },
+                                                "additionals": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "link": {
+                                                                "type": "string",
+                                                                "example": "link"
+                                                            },
+                                                            "task_type": {
+                                                                "type": "string",
+                                                                "example": "link"
+                                                            },
+                                                            "number_invitation": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "endpoint": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "methods": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "api_key": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "partnership": {
+                                                                "type": "string",
+                                                                "example": "for partnership link"
+                                                            },
+                                                            "request_type": {
+                                                                "type": "string",
+                                                                "example": "text, url, number"
+                                                            },
+                                                            "correct_answer": {
+                                                                "type": "string",
+                                                                "example": "for answer"
+                                                            },
+                                                            "stars": {
+                                                                "type": "string",
+                                                                "example": "2"
+                                                            },
+                                                            "steps": {
+                                                                "type": "string",
+                                                                "example": "0 to 10"
+                                                            },
+                                                            "labels": {
+                                                                "type": "string",
+                                                                "example": "0 to 10"
+                                                            },
+                                                            "files": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "format": "binary"
+                                                                },
+                                                                "example": [
+                                                                    "object",
+                                                                    "object",
+                                                                    "object"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quest updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Quest not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quest not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Quests"
@@ -2582,6 +3066,31 @@
                         "description": "last_active timestamp",
                         "type": "string",
                         "format": "date"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateModuleAPIRequest": {
+                "required": [
+                    "name",
+                    "description"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Name of the module",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Description of the module",
+                        "type": "string"
+                    },
+                    "community_id": {
+                        "description": "Commnity Id",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "User Id",
+                        "type": "integer"
                     }
                 },
                 "type": "object"

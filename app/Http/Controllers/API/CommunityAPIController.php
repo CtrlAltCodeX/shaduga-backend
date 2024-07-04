@@ -229,20 +229,18 @@ class CommunityAPIController extends AppBaseController
     public function show($id): JsonResponse
     {
         /** @var Community $community */
-        $community = $this->communityRepository->find($id)->toArray();
-
-        $memberExist = $this->memberRepository->findByField([
-            'community_id' => $community['id'],
-            'user_id' => auth()->user()->id
-        ])->count();
-
-        $community['joined'] = $memberExist ? true : false;
-
+        $community = $this->communityRepository->find($id);
+        
+        $memberExist = $this->memberRepository->findByField(['community_id'=> $community->id, 'user_id' => auth()->user()->id]);
+        
+        $commArr = $community->toArray();
+        $commArr['joined']  = count($memberExist) ? true : false;
+        
         if (empty($community)) {
             return $this->sendError('Community not found');
         }
 
-        return $this->sendResponse('Community retrieved successfully', $community);
+        return $this->sendResponse('Community retrieved successfully', $commArr);
     }
 
     /**
