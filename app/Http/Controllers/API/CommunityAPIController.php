@@ -382,4 +382,62 @@ class CommunityAPIController extends AppBaseController
 
         return $this->sendResponse('All Communities', $data);
     }
+    
+    /**
+     * @OA\Get(
+     *     path="/api/communities/{community_id}/members",
+     *     summary="Get all members by community ID",
+     *     tags={"Communities"},
+     *     @OA\Parameter(
+     *         name="community_id",
+     *         in="path",
+     *         description="ID of the community",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/CommunityWithMembers")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Community not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
+     * * @OA\Schema(
+     *     schema="CommunityWithMembers",
+     *     type="object",
+     *     @OA\Property(
+     *         property="id",
+     *         type="integer",
+     *         description="Community ID"
+     *     ),
+     *     @OA\Property(
+     *         property="name",
+     *         type="string",
+     *         description="Community name"
+     *     ),
+     *     @OA\Property(
+     *         property="members",
+     *         type="array",
+     *         @OA\Items(ref="#/components/schemas/Member")
+     *     )
+     * )
+     */
+    public function memberByCommunity($community_id)
+    {
+        $communitiesWithMembers = $this->communityRepository->with('members.user')->find($community_id);
+
+        return $this->sendResponse('All Communities with Members', $communitiesWithMembers);
+    }
 }

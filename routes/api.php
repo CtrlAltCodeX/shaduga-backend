@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('user/communities/{id}', [CommunityAPIController::class, 'getCurrentCommunities']);
 
+    Route::get('communities/{id}/members', [CommunityAPIController::class, 'memberByCommunity']);
+
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
         ->except(['create', 'edit']);
 

@@ -41,7 +41,7 @@ class ReviewAPIController extends AppBaseController
 
     /**
      * @OA\Post(
-     *     path="/reviews",
+     *     path="/api/reviews",
      *     summary="Store a new review",
      *     description="Create and store a new review in the system.",
      *     tags={"Reviews"},

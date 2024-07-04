@@ -316,6 +316,47 @@
                 }
             }
         },
+        "/api/communities/{community_id}/members": {
+            "get": {
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "Get all members by community ID",
+                "operationId": "80cdfe6bf95f1c10019fbce753499c75",
+                "parameters": [
+                    {
+                        "name": "community_id",
+                        "in": "path",
+                        "description": "ID of the community",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CommunityWithMembers"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Community not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/leader-boards/{id}": {
             "get": {
                 "tags": [
@@ -660,6 +701,79 @@
                                         },
                                         "message": {
                                             "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Update the specified Module in storage",
+                "operationId": "updateModule",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of module to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateModuleAPIRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Module updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module not found"
                                         }
                                     },
                                     "type": "object"
@@ -1323,6 +1437,346 @@
             }
         },
         "/api/quests/{id}": {
+            "put": {
+                "tags": [
+                    "Quests"
+                ],
+                "summary": "Update an existing quest",
+                "description": "Updates the specified quest by ID",
+                "operationId": "updateQuest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quest to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Quest name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Quest description"
+                                    },
+                                    "difficulty": {
+                                        "type": "string",
+                                        "example": "easy"
+                                    },
+                                    "recurrence": {
+                                        "type": "string",
+                                        "example": "daily"
+                                    },
+                                    "cooldown": {
+                                        "type": "integer",
+                                        "example": 24
+                                    },
+                                    "claim_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-05-18T00:00:00Z"
+                                    },
+                                    "condition": {
+                                        "type": "string",
+                                        "example": "Complete 3 tasks"
+                                    },
+                                    "reward": {
+                                        "type": "string",
+                                        "example": "100 points"
+                                    },
+                                    "module": {
+                                        "type": "string",
+                                        "example": "Module A"
+                                    },
+                                    "sprint": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "module_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "additionals": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "link": {
+                                                    "type": "string",
+                                                    "example": "link"
+                                                },
+                                                "task_type": {
+                                                    "type": "string",
+                                                    "example": "link"
+                                                },
+                                                "number_invitation": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "endpoint": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "methods": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "api_key": {
+                                                    "type": "string",
+                                                    "example": "For API"
+                                                },
+                                                "partnership": {
+                                                    "type": "string",
+                                                    "example": "for partnership link"
+                                                },
+                                                "request_type": {
+                                                    "type": "string",
+                                                    "example": "text, url, number"
+                                                },
+                                                "correct_answer": {
+                                                    "type": "string",
+                                                    "example": "for answer"
+                                                },
+                                                "stars": {
+                                                    "type": "string",
+                                                    "example": "2"
+                                                },
+                                                "steps": {
+                                                    "type": "string",
+                                                    "example": "0 to 10"
+                                                },
+                                                "labels": {
+                                                    "type": "string",
+                                                    "example": "0 to 10"
+                                                },
+                                                "files": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "format": "binary"
+                                                    },
+                                                    "example": [
+                                                        "object",
+                                                        "object",
+                                                        "object"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quest updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Quest name"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Quest description"
+                                                },
+                                                "difficulty": {
+                                                    "type": "string",
+                                                    "example": "easy"
+                                                },
+                                                "recurrence": {
+                                                    "type": "string",
+                                                    "example": "daily"
+                                                },
+                                                "cooldown": {
+                                                    "type": "integer",
+                                                    "example": 24
+                                                },
+                                                "claim_time": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-05-18T00:00:00Z"
+                                                },
+                                                "condition": {
+                                                    "type": "string",
+                                                    "example": "Complete 3 tasks"
+                                                },
+                                                "reward": {
+                                                    "type": "string",
+                                                    "example": "100 points"
+                                                },
+                                                "module": {
+                                                    "type": "string",
+                                                    "example": "Module A"
+                                                },
+                                                "sprint": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "status": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "format": "binary"
+                                                },
+                                                "module_id": {
+                                                    "type": "string",
+                                                    "example": "1"
+                                                },
+                                                "additionals": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "link": {
+                                                                "type": "string",
+                                                                "example": "link"
+                                                            },
+                                                            "task_type": {
+                                                                "type": "string",
+                                                                "example": "link"
+                                                            },
+                                                            "number_invitation": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "endpoint": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "methods": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "api_key": {
+                                                                "type": "string",
+                                                                "example": "For API"
+                                                            },
+                                                            "partnership": {
+                                                                "type": "string",
+                                                                "example": "for partnership link"
+                                                            },
+                                                            "request_type": {
+                                                                "type": "string",
+                                                                "example": "text, url, number"
+                                                            },
+                                                            "correct_answer": {
+                                                                "type": "string",
+                                                                "example": "for answer"
+                                                            },
+                                                            "stars": {
+                                                                "type": "string",
+                                                                "example": "2"
+                                                            },
+                                                            "steps": {
+                                                                "type": "string",
+                                                                "example": "0 to 10"
+                                                            },
+                                                            "labels": {
+                                                                "type": "string",
+                                                                "example": "0 to 10"
+                                                            },
+                                                            "files": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "format": "binary"
+                                                                },
+                                                                "example": [
+                                                                    "object",
+                                                                    "object",
+                                                                    "object"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quest updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Quest not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quest not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Quests"
@@ -1405,78 +1859,218 @@
                 }
             }
         },
-        "/reviews": {
-            "get": {
-                "tags": [
-                    "Reviews"
-                ],
-                "summary": "Display a listing of the Reviews",
-                "description": "Display a listing of the Reviews.",
-                "operationId": "246c486f4b3c9dfa919882558536f643",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Review"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
+        "/api/reviews": {
             "post": {
                 "tags": [
                     "Reviews"
                 ],
-                "summary": "Store a newly created Review in storage",
-                "description": "Store a newly created Review in storage.",
-                "operationId": "f19d00248318e567e6aae16f018058df",
+                "summary": "Store a new review",
+                "description": "Create and store a new review in the system.",
+                "operationId": "a5464577f1504717fe4f830d1d640ef5",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CreateReviewAPIRequest"
+                                "required": [
+                                    "user_id",
+                                    "community_id",
+                                    "star_rating",
+                                    "body",
+                                    "status",
+                                    "bookmarked"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "community_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "star_rating": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "This is a review body."
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "approved"
+                                    },
+                                    "bookmarked": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Review"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
+                        "description": "Review saved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "The given data was invalid."
+                                            "example": "Review saved successfully"
                                         },
-                                        "errors": {
-                                            "type": "object",
-                                            "example": {
-                                                "field": [
-                                                    "The field is required."
-                                                ]
-                                            }
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "community_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "star_rating": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "body": {
+                                                    "type": "string",
+                                                    "example": "This is a review body."
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "approved"
+                                                },
+                                                "bookmarked": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid input"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reviews/{userId}/{communityId}": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Get a review by user and community",
+                "description": "Retrieve a review based on user ID and community ID",
+                "operationId": "getReviewByUserCommunity",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "communityId",
+                        "in": "path",
+                        "description": "ID of the community",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Review retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "community_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Review not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }
@@ -2609,6 +3203,25 @@
                 },
                 "type": "object"
             },
+            "CommunityWithMembers": {
+                "properties": {
+                    "id": {
+                        "description": "Community ID",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Community name",
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Member"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "CreateMemberAPIRequest": {
                 "required": [
                     "name",
@@ -2675,103 +3288,27 @@
                 },
                 "type": "object"
             },
-            "Review": {
-                "properties": {
-                    "id": {
-                        "description": "Unique identifier for the review",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "user_id": {
-                        "description": "Unique identifier for the User",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "rating": {
-                        "description": "Rating",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "title": {
-                        "description": "Title",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "body": {
-                        "description": "Content of the review",
-                        "type": "string"
-                    },
-                    "status": {
-                        "description": "Status of the review",
-                        "type": "integer"
-                    },
-                    "bookmarked": {
-                        "description": "Bookmarked of the review",
-                        "type": "integer"
-                    },
-                    "created_at": {
-                        "description": "Creation date of the review",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Last update date of the review",
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "CreateReviewAPIRequest": {
-                "title": "Create Review API Request",
-                "description": "Request body parameters for creating a review.",
+            "UpdateModuleAPIRequest": {
                 "required": [
-                    "product_id",
-                    "rating",
-                    "comment"
+                    "name",
+                    "description"
                 ],
                 "properties": {
-                    "id": {
-                        "description": "Unique identifier for the review",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "user_id": {
-                        "description": "Unique identifier for the User",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "rating": {
-                        "description": "Rating",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "title": {
-                        "description": "Title",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "body": {
-                        "description": "Content of the review",
+                    "name": {
+                        "description": "Name of the module",
                         "type": "string"
                     },
-                    "status": {
-                        "description": "Status of the review",
+                    "description": {
+                        "description": "Description of the module",
+                        "type": "string"
+                    },
+                    "community_id": {
+                        "description": "Commnity Id",
                         "type": "integer"
                     },
-                    "bookmarked": {
-                        "description": "Bookmarked of the review",
+                    "user_id": {
+                        "description": "User Id",
                         "type": "integer"
-                    },
-                    "created_at": {
-                        "description": "Creation date of the review",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Last update date of the review",
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -2849,5 +3386,151 @@
                 "type": "object"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Chats",
+            "description": "Chats"
+        },
+        {
+            "name": "Chats",
+            "description": "Chats"
+        },
+        {
+            "name": "Chats",
+            "description": "Chats"
+        },
+        {
+            "name": "Communities",
+            "description": "Communities"
+        },
+        {
+            "name": "Communities",
+            "description": "Communities"
+        },
+        {
+            "name": "Communities",
+            "description": "Communities"
+        },
+        {
+            "name": "Communities",
+            "description": "Communities"
+        },
+        {
+            "name": "Communities",
+            "description": "Communities"
+        },
+        {
+            "name": "LeaderBoards",
+            "description": "LeaderBoards"
+        },
+        {
+            "name": "Members",
+            "description": "Members"
+        },
+        {
+            "name": "Members",
+            "description": "Members"
+        },
+        {
+            "name": "Modules",
+            "description": "Modules"
+        },
+        {
+            "name": "Modules",
+            "description": "Modules"
+        },
+        {
+            "name": "Modules",
+            "description": "Modules"
+        },
+        {
+            "name": "Modules",
+            "description": "Modules"
+        },
+        {
+            "name": "Quests",
+            "description": "Quests"
+        },
+        {
+            "name": "Quests",
+            "description": "Quests"
+        },
+        {
+            "name": "Quests",
+            "description": "Quests"
+        },
+        {
+            "name": "Quests",
+            "description": "Quests"
+        },
+        {
+            "name": "Quests",
+            "description": "Quests"
+        },
+        {
+            "name": "Reviews",
+            "description": "Reviews"
+        },
+        {
+            "name": "Reviews",
+            "description": "Reviews"
+        },
+        {
+            "name": "Subscriptions",
+            "description": "Subscriptions"
+        },
+        {
+            "name": "Subscriptions",
+            "description": "Subscriptions"
+        },
+        {
+            "name": "Tasks",
+            "description": "Tasks"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        }
+    ]
 }
