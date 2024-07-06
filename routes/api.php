@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CommunityAPIController;
+use App\Http\Controllers\API\ReviewAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserAPIController;
@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('user/communities/{id}', [CommunityAPIController::class, 'getCurrentCommunities']);
 
+    Route::get('communities/{id}/members', [CommunityAPIController::class, 'memberByCommunity']);
+
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
         ->except(['create', 'edit']);
 
@@ -35,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('reviews', App\Http\Controllers\API\ReviewAPIController::class)
         ->except(['create', 'edit']);
+
+    Route::get('reviews/{user_id}/{community_id}', [ReviewAPIController::class, 'getReviewByUserCommunity']);
 
     Route::resource('quests', App\Http\Controllers\API\QuestAPIController::class)
         ->except(['create', 'edit']);

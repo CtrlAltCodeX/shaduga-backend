@@ -17,7 +17,6 @@ return new class extends Migration
             $table->tinyInteger('is_blockchain');
             $table->string('website');
             $table->text('invities')->nullable();
-            // $table->integer('category_id');
         });
     }
 

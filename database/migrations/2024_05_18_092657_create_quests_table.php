@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('quests', function (Blueprint $table) {
             $table->id('id');
+            $table->string('name');
+            $table->string('description');
             $table->string('recurrence');
             $table->string('cooldown');
             $table->string('claim_time');

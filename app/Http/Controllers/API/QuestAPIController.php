@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Models\QuestAdditional;
+use App\Repositories\QuestAdditionalRepository;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -21,7 +22,7 @@ class QuestAPIController extends AppBaseController
 
     public function __construct(
         QuestRepository $questRepo,
-        public QuestAdditional $questRepoAdditional
+        public QuestAdditionalRepository $questRepoAdditional
     ) {
         $this->questRepository = $questRepo;
     }

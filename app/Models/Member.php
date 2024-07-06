@@ -34,5 +34,8 @@ class Member extends Model
         'last_active' => 'required'
     ];
 
-    
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

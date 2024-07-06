@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('quest_additionals', function (Blueprint $table) {
             $table->id();
-            $table->integer('quest_id')->nullable();
+            $table->unsignedBigInteger('quest_id')->nullable();
             $table->string('link')->nullable();
             $table->string('partnership')->nullable();
             $table->string('number_invitation')->nullable();
@@ -29,6 +29,11 @@ return new class extends Migration
             $table->string('labels')->nullable();
             $table->string('files')->nullable();
             $table->timestamps();
+
+            $table->foreign('quest_id')
+                ->references('id')
+                ->on('quests')
+                ->onDelete('cascade'); // Optional: Define the action on delete
         });
     }
 

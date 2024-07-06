@@ -34,7 +34,7 @@ class TaskAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse($tasks->toArray(), 'Tasks retrieved successfully');
+        return $this->sendResponse('Tasks retrieved successfully', $tasks->toArray());
     }
 
     /**
@@ -96,7 +96,7 @@ class TaskAPIController extends AppBaseController
 
         $task = $this->taskRepository->create($input);
 
-        return $this->sendResponse($task->toArray(), 'Task saved successfully');
+        return $this->sendResponse('Task saved successfully', $task->toArray());
     }
 
     /**
@@ -112,7 +112,7 @@ class TaskAPIController extends AppBaseController
             return $this->sendError('Task not found');
         }
 
-        return $this->sendResponse($task->toArray(), 'Task retrieved successfully');
+        return $this->sendResponse('Task retrieved successfully', $task->toArray());
     }
 
     /**
@@ -132,7 +132,7 @@ class TaskAPIController extends AppBaseController
 
         $task = $this->taskRepository->update($input, $id);
 
-        return $this->sendResponse($task->toArray(), 'Task updated successfully');
+        return $this->sendResponse('Task updated successfully', $task->toArray());
     }
 
     /**
@@ -152,6 +152,6 @@ class TaskAPIController extends AppBaseController
 
         $task->delete();
 
-        return $this->sendSuccess('Task deleted successfully');
+        return $this->sendResponse('Task deleted successfully');
     }
 }
