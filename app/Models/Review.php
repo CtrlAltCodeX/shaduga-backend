@@ -15,7 +15,8 @@ class Review extends Model
         'body',
         'status',
         "bookmarked",
-        'image'
+        'image',
+        'community_id'
     ];
 
     protected $casts = [
@@ -27,12 +28,10 @@ class Review extends Model
 
     public static array $rules = [
         'user_id' => 'required',
-        'rating' => 'required',
-        'title' => 'required',
         'body' => 'required',
         'status' => 'required',
         "bookmarked" => "required",
-        'image' => "required"
+        "community_id" => "required",
     ];
 
     public function user()

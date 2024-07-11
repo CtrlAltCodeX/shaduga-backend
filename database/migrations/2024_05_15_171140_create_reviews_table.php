@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('community_id');
-            $table->tinyInteger('star_rating');
+            $table->tinyInteger('rating')->nullable();
             $table->string('body');
+            $table->string('title')->nullable();
             $table->tinyInteger('status');
             $table->tinyInteger('bookmarked');
             $table->timestamps();

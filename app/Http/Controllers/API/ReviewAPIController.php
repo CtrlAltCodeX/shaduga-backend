@@ -220,7 +220,8 @@ class ReviewAPIController extends AppBaseController
      */
     public function getReviewByUserCommunity($userId, $communityId)
     {
-        $review = $this->reviewRepository->findByField(['user_id' => $userId, 'community_id' => $communityId]);
+        $review = $this->reviewRepository->with('user')
+            ->findByField(['user_id' => $userId, 'community_id' => $communityId]);
 
         return $this->sendResponse('Review retrieved successfully', $review);
     }

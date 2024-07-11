@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('reviews', function (Blueprint $table) {
             $table->tinyInteger("bookmarked");
-            $table->string("image");
+            $table->string("image")->nullable();
         });
     }
 
