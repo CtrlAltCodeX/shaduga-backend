@@ -357,6 +357,80 @@
                 }
             }
         },
+        "/api/send/invitation": {
+            "post": {
+                "summary": "Send invitations",
+                "description": "Sends invitations via email",
+                "operationId": "06beb7f3859513f3aa95243dae2acfd9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "link": {
+                                        "description": "The email address to send the invite to",
+                                        "type": "string",
+                                        "example": "example@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Invitation sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invitation Send"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/leader-boards/{id}": {
             "get": {
                 "tags": [
@@ -701,6 +775,160 @@
                                         },
                                         "message": {
                                             "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Update the specified Module in storage",
+                "operationId": "updateModule",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of module to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateModuleAPIRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Module updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Modules"
+                ],
+                "summary": "Remove the specified Module from storage",
+                "description": "Deletes a module based on the provided ID",
+                "operationId": "destroyModule",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the module to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Module deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Module not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Module not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while deleting the module"
                                         }
                                     },
                                     "type": "object"
@@ -3134,56 +3362,7 @@
                 },
                 "type": "object"
             },
-            "Review": {
-                "properties": {
-                    "id": {
-                        "description": "Unique identifier for the review",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "user_id": {
-                        "description": "Unique identifier for the User",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "rating": {
-                        "description": "Rating",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "title": {
-                        "description": "Title",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "body": {
-                        "description": "Content of the review",
-                        "type": "string"
-                    },
-                    "status": {
-                        "description": "Status of the review",
-                        "type": "integer"
-                    },
-                    "bookmarked": {
-                        "description": "Bookmarked of the review",
-                        "type": "integer"
-                    },
-                    "created_at": {
-                        "description": "Creation date of the review",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Last update date of the review",
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "CreateReviewAPIRequest": {
-                "title": "Create Review API Request",
-                "description": "Request body parameters for creating a review.",
+            "UpdateModuleAPIRequest": {
                 "required": [
                     "name",
                     "description"
@@ -3281,151 +3460,5 @@
                 "type": "object"
             }
         }
-    },
-    "tags": [
-        {
-            "name": "Chats",
-            "description": "Chats"
-        },
-        {
-            "name": "Chats",
-            "description": "Chats"
-        },
-        {
-            "name": "Chats",
-            "description": "Chats"
-        },
-        {
-            "name": "Communities",
-            "description": "Communities"
-        },
-        {
-            "name": "Communities",
-            "description": "Communities"
-        },
-        {
-            "name": "Communities",
-            "description": "Communities"
-        },
-        {
-            "name": "Communities",
-            "description": "Communities"
-        },
-        {
-            "name": "Communities",
-            "description": "Communities"
-        },
-        {
-            "name": "LeaderBoards",
-            "description": "LeaderBoards"
-        },
-        {
-            "name": "Members",
-            "description": "Members"
-        },
-        {
-            "name": "Members",
-            "description": "Members"
-        },
-        {
-            "name": "Modules",
-            "description": "Modules"
-        },
-        {
-            "name": "Modules",
-            "description": "Modules"
-        },
-        {
-            "name": "Modules",
-            "description": "Modules"
-        },
-        {
-            "name": "Modules",
-            "description": "Modules"
-        },
-        {
-            "name": "Quests",
-            "description": "Quests"
-        },
-        {
-            "name": "Quests",
-            "description": "Quests"
-        },
-        {
-            "name": "Quests",
-            "description": "Quests"
-        },
-        {
-            "name": "Quests",
-            "description": "Quests"
-        },
-        {
-            "name": "Quests",
-            "description": "Quests"
-        },
-        {
-            "name": "Reviews",
-            "description": "Reviews"
-        },
-        {
-            "name": "Reviews",
-            "description": "Reviews"
-        },
-        {
-            "name": "Subscriptions",
-            "description": "Subscriptions"
-        },
-        {
-            "name": "Subscriptions",
-            "description": "Subscriptions"
-        },
-        {
-            "name": "Tasks",
-            "description": "Tasks"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
-            "name": "Authentication",
-            "description": "Authentication"
-        },
-        {
-            "name": "Authentication",
-            "description": "Authentication"
-        },
-        {
-            "name": "Authentication",
-            "description": "Authentication"
-        },
-        {
-            "name": "Authentication",
-            "description": "Authentication"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
-            "name": "Authentication",
-            "description": "Authentication"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
-            "name": "Users",
-            "description": "Users"
-        }
-    ]
+    }
 }

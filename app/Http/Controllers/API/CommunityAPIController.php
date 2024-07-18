@@ -234,12 +234,12 @@ class CommunityAPIController extends AppBaseController
     {
         /** @var Community $community */
         $community = $this->communityRepository->find($id);
-        
-        $memberExist = $this->memberRepository->findByField(['community_id'=> $community->id, 'user_id' => auth()->user()->id]);
-        
+
+        $memberExist = $this->memberRepository->findByField(['community_id' => $community->id, 'user_id' => auth()->user()->id]);
+
         $commArr = $community->toArray();
         $commArr['joined']  = count($memberExist) ? true : false;
-        
+
         if (empty($community)) {
             return $this->sendError('Community not found');
         }
@@ -373,7 +373,10 @@ class CommunityAPIController extends AppBaseController
      */
     public function getCurrentCommunities($id)
     {
-        $community = $this->communityRepository->findWhere(["user_id" => $id])->toArray();
+        $community = $this->communityRepository
+            ->withCount('members')
+            ->findWhere(["user_id" => $id])
+            ->toArray();
 
         $communityMembers = $this->memberRepository->findWhere(['user_id' => $id]);
 
@@ -444,5 +447,67 @@ class CommunityAPIController extends AppBaseController
         $communitiesWithMembers = $this->communityRepository->with('members.user')->find($community_id);
 
         return $this->sendResponse('All Communities with Members', $communitiesWithMembers);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/send/invitation",
+     *     summary="Send invitations",
+     *     description="Sends invitations via email",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="link",
+     *                 type="string",
+     *                 description="The email address to send the invite to",
+     *                 example="example@example.com"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Invitation sent successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Invitation Send"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Invalid request"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Server error"
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function sendInvities()
+    {
+        Mail::to(request()->link)->send(new InviteMail(request()->link));
+
+        return $this->sendResponse('Invitation Send');
     }
 }

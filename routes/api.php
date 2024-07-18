@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\API\CommunityAPIController;
 use App\Http\Controllers\API\ReviewAPIController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserAPIController;
 /*
@@ -54,6 +53,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('modules', App\Http\Controllers\API\ModuleAPIController::class)
         ->except(['create', 'edit']);
+
+    Route::post('send/invitation', [CommunityAPIController::class, 'sendInvities']);
 
     Route::post('logout', [UserAPIController::class, 'logout']);
 });
