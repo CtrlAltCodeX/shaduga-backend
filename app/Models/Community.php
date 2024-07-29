@@ -42,4 +42,9 @@ class Community extends Model
     {
         return $this->hasMany(Member::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

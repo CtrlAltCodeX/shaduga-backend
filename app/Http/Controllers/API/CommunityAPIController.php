@@ -444,7 +444,10 @@ class CommunityAPIController extends AppBaseController
      */
     public function memberByCommunity($community_id)
     {
-        $communitiesWithMembers = $this->communityRepository->with('members.user')->find($community_id);
+        $communitiesWithMembers = $this->communityRepository
+            ->with('user')
+            ->with('members.user')
+            ->find($community_id);
 
         return $this->sendResponse('All Communities with Members', $communitiesWithMembers);
     }
