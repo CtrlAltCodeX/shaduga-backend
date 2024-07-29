@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\CreatePropertyBoardsAPIRequest;
 use App\Http\Requests\API\CreateReviewAPIRequest;
 use App\Http\Requests\API\UpdateReviewAPIRequest;
-use App\Repositories\PropertyRepository;
+use App\Repositories\CommunityRepository;
 use App\Repositories\ReviewRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -22,6 +21,7 @@ class ReviewsController extends AppBaseController
     public function __construct(
         public ReviewRepository $reviewRepository,
         public UserRepository $userRepository,
+        public CommunityRepository $communityRepository
     ) {
     }
 
@@ -43,7 +43,9 @@ class ReviewsController extends AppBaseController
     {
         $users = $this->userRepository->all();
 
-        return view('admin.reviews.create', compact('users'));
+        $communities = $this->communityRepository->all();
+
+        return view('admin.reviews.create', compact('users', 'communities'));
     }
 
     /**
@@ -91,6 +93,8 @@ class ReviewsController extends AppBaseController
     {
         $reviews = $this->reviewRepository->find($id);
 
+        $communities = $this->communityRepository->all();
+
         $users = $this->userRepository->all();
 
         if (empty($reviews)) {
@@ -99,7 +103,7 @@ class ReviewsController extends AppBaseController
             return redirect(route('admin.reviews.index'));
         }
 
-        return view('admin.reviews.edit', compact('users', 'reviews'));
+        return view('admin.reviews.edit', compact('users', 'reviews', 'communities'));
     }
 
     /**
