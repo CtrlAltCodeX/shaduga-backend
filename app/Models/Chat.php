@@ -13,17 +13,14 @@ class Chat extends Model
         'receiver_id',
         'message',
         'status',
-        'conversation_id',
-        'type'
+        'community_id',
     ];
 
     protected $casts = [
         'sender_id' => 'integer',
         'receiver_id' => 'integer',
         'message' => 'string',
-        'status' => 'string',
-        'conversation_id' => 'integer',
-        'type' => 'string'
+        'status' => 'string'
     ];
 
     public static array $rules = [
@@ -31,7 +28,6 @@ class Chat extends Model
         'receiver_id' => 'required',
         'message' => 'required',
         'status' => 'required',
-        'conversation_id' => 'required',
-        'type' => 'required'
+        'community_id' => 'required'
     ];
 }

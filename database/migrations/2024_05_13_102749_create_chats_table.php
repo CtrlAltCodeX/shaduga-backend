@@ -15,13 +15,27 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id('id');
-            $table->integer('sender_id');
-            $table->integer('receiver_id');
+            $table->unsignedBigInteger('sender_id');
+            $table->unsignedBigInteger('receiver_id');
             $table->string('message');
             $table->string('status');
-            $table->integer('conversation_id');
-            $table->string('type');
+            $table->unsignedBigInteger('community_id');
             $table->timestamps();
+
+            $table->foreign('community_id')
+                ->references('id')
+                ->on('communities')
+                ->onDelete('cascade');
+
+            $table->foreign('sender_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('receiver_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

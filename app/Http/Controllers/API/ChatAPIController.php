@@ -153,6 +153,12 @@ class ChatAPIController extends AppBaseController
      *          description="Identifier of the user or group who received the message",
      *      ),
      *      @OA\Property(
+     *          property="community_id",
+     *          type="integer",
+     *          format="int64",
+     *          description="Identifier of the user or group who received the message",
+     *      ),
+     *      @OA\Property(
      *          property="attachment",
      *          type="string",
      *          description="Attachment data or reference (optional)",
@@ -271,6 +277,112 @@ class ChatAPIController extends AppBaseController
 
         $chat->delete();
 
-        return $this->sendSuccess('Chat deleted successfully');
+        return $this->sendResponse('Chat deleted successfully');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/chat",
+     *     summary="Get user chats",
+     *     description="Retrieve chats for a user with a specific receiver and community.",
+     *     operationId="userChat",
+     *     tags={"Chats"},
+     *     @OA\Parameter(
+     *         name="receiver_id",
+     *         in="query",
+     *         required=true,
+     *         description="The ID of the receiver",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="community_id",
+     *         in="query",
+     *         required=true,
+     *         description="The ID of the community",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="User Chats"
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         example=1
+     *                     ),
+     *                     @OA\Property(
+     *                         property="sender_id",
+     *                         type="integer",
+     *                         example=1
+     *                     ),
+     *                     @OA\Property(
+     *                         property="receiver_id",
+     *                         type="integer",
+     *                         example=2
+     *                     ),
+     *                     @OA\Property(
+     *                         property="community_id",
+     *                         type="integer",
+     *                         example=1
+     *                     ),
+     *                     @OA\Property(
+     *                         property="message",
+     *                         type="string",
+     *                         example="Hello, how are you?"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="created_at",
+     *                         type="string",
+     *                         format="date-time",
+     *                         example="2023-07-21T17:32:28Z"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="updated_at",
+     *                         type="string",
+     *                         format="date-time",
+     *                         example="2023-07-21T17:32:28Z"
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Invalid parameters"
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function userChat()
+    {
+        $chats = $this->chatRepository->findByField([
+            'sender_id' => 1,
+            'receiver_id' => request()->receiver_id,
+            'community_id' => request()->community_id,
+        ]);
+
+        return $this->sendResponse('User Chats', $chats);
     }
 }

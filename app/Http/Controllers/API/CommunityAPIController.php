@@ -172,6 +172,15 @@ class CommunityAPIController extends AppBaseController
 
             $communityUpdate->update(['link' => $input['link']]);
 
+            $this->memberRepository->create([
+                'community_id' => $community->id,
+                'user_id' => auth()->user()->id,
+                'join_date' =>  now(),
+                'status' => 1,
+                'role' => 'Admin',
+                'last_active' => now()
+            ]);
+
             $data = $community->toArray();
             $data['link'] = $input['link'];
 
@@ -445,7 +454,6 @@ class CommunityAPIController extends AppBaseController
     public function memberByCommunity($community_id)
     {
         $communitiesWithMembers = $this->communityRepository
-            ->with('user')
             ->with('members.user')
             ->find($community_id);
 
