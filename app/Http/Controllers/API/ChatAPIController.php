@@ -377,11 +377,13 @@ class ChatAPIController extends AppBaseController
      */
     public function userChat()
     {
-        $chats = $this->chatRepository->findByField([
-            'sender_id' => 1,
-            'receiver_id' => request()->receiver_id,
-            'community_id' => request()->community_id,
-        ]);
+        $chats = Chat::where(function ($query) {
+            $query->where('receiver_id', request()->receiver_id)
+                ->orWhere('receiver_id', auth()->user()->id);
+        })->where(function ($query) {
+            $query->where('sender_id', auth()->user()->id)
+                ->orWhere('sender_id', request()->receiver_id);
+        })->where('community_id', request()->community_id)->get();
 
         return $this->sendResponse('User Chats', $chats);
     }
