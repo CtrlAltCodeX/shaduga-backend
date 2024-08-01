@@ -382,17 +382,22 @@ class CommunityAPIController extends AppBaseController
      */
     public function getCurrentCommunities($id)
     {
-        $community = $this->communityRepository
-            ->withCount('members')
-            ->findWhere(["user_id" => $id])
-            ->toArray();
+        $community = $this->communityRepository->withCount('members')->findWhere(["user_id" => $id])->toArray();
 
         $communityMembers = $this->memberRepository->findWhere(['user_id' => $id]);
 
         $communities = [];
 
         foreach ($communityMembers as $members) {
-            $communities[] = $this->communityRepository->find($members->community_id)->toArray();
+            $connectedCommunities = Community::where('user_id', '!=', $id)
+                ->where('id', $members->community_id)
+                ->get()
+                ->toArray();
+            
+            if (count($connectedCommunities)) {
+                $communities[] = $connectedCommunities[0];
+            }
+                
         }
 
         $data = array_merge($community, $communities);
