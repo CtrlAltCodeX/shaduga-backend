@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ChatAPIController;
 use App\Http\Controllers\API\CommunityAPIController;
 use App\Http\Controllers\API\ReviewAPIController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('chats', App\Http\Controllers\API\ChatAPIController::class)
         ->except(['create', 'edit']);
+
+    Route::get('/user/chat', [ChatAPIController::class, 'userChat']);
 
     Route::resource('reviews', App\Http\Controllers\API\ReviewAPIController::class)
         ->except(['create', 'edit']);

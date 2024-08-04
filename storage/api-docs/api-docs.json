@@ -136,6 +136,108 @@
                 }
             }
         },
+        "/api/user/chat": {
+            "get": {
+                "tags": [
+                    "Chats"
+                ],
+                "summary": "Get user chats",
+                "description": "Retrieve chats for a user with a specific receiver and community.",
+                "operationId": "userChat",
+                "parameters": [
+                    {
+                        "name": "receiver_id",
+                        "in": "query",
+                        "description": "The ID of the receiver",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "community_id",
+                        "in": "query",
+                        "description": "The ID of the community",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User Chats"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "sender_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "receiver_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "community_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Hello, how are you?"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2023-07-21T17:32:28Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2023-07-21T17:32:28Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/communities": {
             "get": {
                 "tags": [
@@ -3191,6 +3293,11 @@
                         "format": "int64"
                     },
                     "receiver_id": {
+                        "description": "Identifier of the user or group who received the message",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "community_id": {
                         "description": "Identifier of the user or group who received the message",
                         "type": "integer",
                         "format": "int64"
