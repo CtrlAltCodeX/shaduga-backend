@@ -1,6 +1,13 @@
 @extends('admin.app')
 
 @section('content')
+<style>
+    nav {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: end;
+    }
+</style>
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-12">
@@ -18,15 +25,15 @@
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->status }}</td>
-                            <td class="d-flex" style="grid-gap: 10px;">
-                                <a class="btn btn-success ml-2"  href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
-                                <a class="btn btn-success"  href="{{ route('admin.users.delete',$user->id) }}">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->status }}</td>
+                        <td class="d-flex" style="grid-gap: 10px;">
+                            <a class="btn btn-success ml-2" href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
+                            <a class="btn btn-success" href="{{ route('admin.users.delete',$user->id) }}">Delete</a>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

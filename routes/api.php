@@ -73,3 +73,5 @@ Route::post('verify/otp', [UserAPIController::class, 'verifyOTP']);
 Route::post('forget-password', [UserAPIController::class, 'forgetPassword']);
 
 Route::post('reset-password', [UserAPIController::class, 'resetPassword']);
+
+Route::get('all/communities', [CommunityAPIController::class, 'index']);
